@@ -5,16 +5,10 @@ PathMantra is an intelligent career guidance platform that helps users discover 
 ## Features
 
 ### 🧠 AI-Powered Career Recommendations
-- Interactive career quiz with voice input support
-- GPT-4 powered analysis of skills, interests, and preferences
-- Personalized career matches with compatibility scores
-- Salary ranges and growth potential insights
+
 
 ### 🎯 Skill Gap Analysis
-- Comprehensive skill assessment against career requirements
-- Clear visualization of existing vs. missing skills
-- Prioritized learning recommendations
-- Industry-specific skill requirements
+- 
 
 ### 🗺️ Custom Learning Roadmaps
 - Detailed 3-6 month learning plans
@@ -29,9 +23,7 @@ PathMantra is an intelligent career guidance platform that helps users discover 
 - Export roadmaps as PDF
 
 ### 🎤 Voice Input Support
-- Web Speech API integration
-- Voice-to-text for quiz responses
-- Improved accessibility and user experience
+
 
 ## Tech Stack
 
@@ -39,17 +31,15 @@ PathMantra is an intelligent career guidance platform that helps users discover 
 - **UI Components**: shadcn/ui component library
 - **Authentication**: Firebase Auth with Google Sign-In
 - **Database**: Firebase Firestore
-- **AI**: OpenAI GPT-4 API
-- **PDF Generation**: jsPDF + html2canvas
-- **Voice Input**: Web Speech API
-- **Deployment**: Vercel (frontend)
+- **AI**: open router ai
+
 
 ## Getting Started
 
 ### Prerequisites
 - Node.js 18+ and npm
 - Firebase project with Authentication and Firestore enabled
-- OpenAI API key with GPT-4 access
+- open router
 
 ### Installation
 
@@ -67,8 +57,8 @@ npm install
 3. Set up environment variables
 Create a \`.env.local\` file in the root directory:
 \`\`\`env
-# OpenAI API Key
-OPENAI_API_KEY=your_openai_api_key_here
+# open router API Key
+OPENROUTER_API_KEY=your_openai_api_key_here
 
 # Firebase Configuration
 NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key_here
@@ -92,37 +82,6 @@ npm run dev
 
 6. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## Project Structure
-
-\`\`\`
-PathMantra/
-├── app/                    # Next.js app directory
-│   ├── api/               # API routes
-│   │   ├── career-suggestions/
-│   │   ├── skill-gap/
-│   │   └── roadmap/
-│   ├── dashboard/         # Dashboard page
-│   ├── login/            # Login page
-│   ├── quiz/             # Career quiz page
-│   ├── recommendations/   # Recommendations page
-│   ├── roadmap/          # Roadmap page
-│   └── globals.css       # Global styles
-├── components/           # Reusable components
-│   ├── ui/              # shadcn/ui components
-│   ├── Header.js
-│   ├── Footer.js
-│   ├── LandingPage.js
-│   ├── LoginForm.js
-│   ├── CareerQuiz.js
-│   ├── CareerRecommendations.js
-│   ├── RoadmapGenerator.js
-│   └── Dashboard.js
-├── lib/                 # Utility libraries
-│   ├── firebase.js      # Firebase configuration
-│   ├── auth-context.js  # Authentication context
-│   └── utils.js         # Utility functions
-└── public/             # Static assets
-\`\`\`
 
 ## Key Features Implementation
 
