@@ -1,0 +1,60 @@
+export const dynamic = 'force-dynamic';
+
+import { NextResponse } from 'next/server';
+import OpenAI from 'openai';
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+export async function POST(request) {
+  try {
+    const { userSkills, careerTitle } = await request.json();
+
+    const prompt = `
+      Analyze the skill gap for someone who wants to become a ${careerTitle}.
+      
+      User's current skills: ${userSkills}
+      Target career: ${careerTitle}
+      
+      Please provide a detailed skill gap analysis in the following JSON format:
+      {
+        "existing_skills": ["skill1", "skill2"],
+        "missing_skills": ["skill3", "skill4"],
+        "skill_priorities": [
+          {
+            "skill": "skill_name",
+            "priority": "High/Medium/Low",
+            "description": "Why this skill is important"
+          }
+        ]
+      }
+    `;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4",
+      messages: [
+        {
+          role: "system",
+          content: "You are a career advisor AI that analyzes skill gaps for career transitions. Always respond with valid JSON."
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      temperature: 0.7,
+      max_tokens: 1500,
+    });
+
+    const response = JSON.parse(completion.choices[0].message.content);
+    
+    return NextResponse.json(response);
+  } catch (error) {
+    console.error('Error analyzing skill gap:', error);
+    return NextResponse.json(
+      { error: 'Failed to analyze skill gap' },
+      { status: 500 }
+    );
+  }
+}
