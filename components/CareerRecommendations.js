@@ -57,7 +57,7 @@ export default function CareerRecommendations() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p>Loading your recommendations...</p>
         </div>
       </div>
@@ -110,7 +110,7 @@ export default function CareerRecommendations() {
                     </div>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <TrendingUp className="h-5 w-5 text-orange-600" />
+                    <TrendingUp className="h-5 w-5 text-blue-600" />
                     <div>
                       <p className="text-sm font-medium text-gray-700">Growth Potential</p>
                       <p className="text-sm text-gray-600">{career.growth_potential}</p>
@@ -132,7 +132,7 @@ export default function CareerRecommendations() {
                 <Button
                   onClick={() => handleViewSkillGap(career)}
                   disabled={loading && selectedCareer?.title === career.title}
-                  className="w-full bg-orange-600 hover:bg-orange-700"
+                  className="w-full bg-blue-600 hover:bg-blue-700"
                 >
                   {loading && selectedCareer?.title === career.title ? (
                     'Analyzing Skills...'

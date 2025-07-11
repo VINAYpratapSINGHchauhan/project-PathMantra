@@ -279,9 +279,9 @@ export default function CareerQuiz() {
                   </div>
                 </div>
                 
-                <div className="bg-orange-50 p-4 rounded-lg">
-                  <h4 className="font-semibold text-orange-900">Quiz Summary</h4>
-                  <div className="mt-2 text-sm text-orange-800">
+                <div className="bg-blue-50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-blue-900">Quiz Summary</h4>
+                  <div className="mt-2 text-sm text-blue-800">
                     <p><strong>Skills:</strong> {formData.skills}</p>
                     <p><strong>Interests:</strong> {formData.interests}</p>
                     <p><strong>Education:</strong> {formData.education}</p>
@@ -306,7 +306,7 @@ export default function CareerQuiz() {
                 <Button 
                   onClick={handleSubmit} 
                   disabled={loading}
-                  className="ml-auto bg-orange-600 hover:bg-orange-700"
+                  className="ml-auto bg-blue-600 hover:bg-blue-700"
                 >
                   {loading ? 'Analyzing...' : 'Get My Recommendations'}
                 </Button>

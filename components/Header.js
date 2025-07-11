@@ -22,24 +22,24 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-orange-700 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
+    <header className="bg-white/70 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link href="/" className="flex items-center space-x-2">
-            <Brain className="h-8 w-8 text-orange-100" />
-            <span className="text-xl font-bold text-white">PathMantra</span>
+            <Brain className="h-8 w-8 text-blue-700" />
+            <span className="text-xl font-bold text-gray-800">PathMantra</span>
           </Link>
           
           <nav className="hidden md:flex space-x-8">
-            <Link href="/" className="text-white hover:text-gray-300 transition-colors">
+            <Link href="/" className="text-gray-800 hover:text-gray-300 transition-colors">
               Home
             </Link>
             {user && (
-              <Link href="/dashboard" className="text-white hover:text-gray-300 transition-colors">
+              <Link href="/dashboard" className="text-gray-800 hover:text-gray-300 transition-colors">
                 Dashboard
               </Link>
             )}
-            <Link href="/about" className="text-white hover:text-gray-300 transition-colors">
+            <Link href="/about" className="text-gray-800 hover:text-gray-300 transition-colors">
               About
             </Link>
           </nav>
@@ -48,8 +48,8 @@ export default function Header() {
             {user ? (
               <div className="flex items-center space-x-4">
                 <div className="flex items-center space-x-2">
-                  <User className="h-5 w-5 text-white" />
-                  <span className="text-sm text-white">{user.displayName}</span>
+                  <User className="h-5 w-5 text-gray-800" />
+                  <span className="text-sm text-gray-800">{user.displayName}</span>
                 </div>
                 <Button
                   variant="outline"
@@ -64,7 +64,7 @@ export default function Header() {
             ) : (
               <Button
                 onClick={() => router.push('/login')}
-                className="bg-orange-600 hover:bg-orange-700"
+                className="bg-blue-600 hover:bg-blue-700"
               >
                 Login
               </Button>

@@ -30,7 +30,7 @@ export default function LoginForm() {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
-            <Brain className="h-12 w-12 text-orange-600" />
+            <Brain className="h-12 w-12 text-blue-600" />
           </div>
           <CardTitle className="text-2xl font-bold">Welcome to PathMantra</CardTitle>
           <CardDescription>
@@ -41,7 +41,7 @@ export default function LoginForm() {
           <Button
             onClick={signInWithGoogle}
             disabled={loading}
-            className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors duration-200"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors duration-200"
           >
             <Chrome className="mr-2 h-5 w-5" />
             {loading ? 'Signing in...' : 'Sign in with Google'}
@@ -50,9 +50,9 @@ export default function LoginForm() {
           <div className="text-center text-sm text-gray-600">
             <p>
               By signing in, you agree to our{' '}
-              <a href="#" className="text-orange-600 hover:underline">Terms of Service</a>{' '}
+              <a href="#" className="text-blue-600 hover:underline">Terms of Service</a>{' '}
               and{' '}
-              <a href="#" className="text-orange-600 hover:underline">Privacy Policy</a>
+              <a href="#" className="text-blue-600 hover:underline">Privacy Policy</a>
             </p>
           </div>
         </CardContent>

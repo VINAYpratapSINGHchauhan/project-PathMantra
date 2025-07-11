@@ -72,7 +72,7 @@ export default function RoadmapGenerator() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p>Loading skill analysis...</p>
         </div>
       </div>
@@ -136,7 +136,7 @@ export default function RoadmapGenerator() {
                   <p className="text-sm text-gray-600">Salary Range</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-lg font-semibold text-orange-600 mb-2">
+                  <p className="text-lg font-semibold text-blue-600 mb-2">
                     {selectedCareer.growth_potential}
                   </p>
                   <p className="text-sm text-gray-600">Growth Potential</p>
@@ -190,7 +190,7 @@ export default function RoadmapGenerator() {
                 <>
                   <Separator />
                   <div>
-                    <h4 className="font-semibold text-orange-700 mb-3">Learning Priorities</h4>
+                    <h4 className="font-semibold text-blue-700 mb-3">Learning Priorities</h4>
                     <div className="space-y-3">
                       {skillGapData.skill_priorities.map((item, index) => (
                         <div key={index} className="flex items-start space-x-3">
@@ -219,7 +219,7 @@ export default function RoadmapGenerator() {
             <Card>
               <CardContent className="py-12">
                 <div className="text-center">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto mb-4"></div>
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
                   <p>Generating your personalized learning roadmap...</p>
                 </div>
               </CardContent>
@@ -236,9 +236,9 @@ export default function RoadmapGenerator() {
               </CardHeader>
               <CardContent className="space-y-6">
                 {roadmapData.roadmap?.phases?.map((phase, index) => (
-                  <div key={index} className="border-l-4 border-orange-500 pl-6 pb-6">
+                  <div key={index} className="border-l-4 border-blue-500 pl-6 pb-6">
                     <div className="flex items-center space-x-2 mb-3">
-                      <Badge variant="outline" className="text-orange-600">
+                      <Badge variant="outline" className="text-blue-600">
                         {phase.phase}
                       </Badge>
                       <Clock className="h-4 w-4 text-gray-500" />

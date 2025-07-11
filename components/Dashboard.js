@@ -144,7 +144,7 @@ export default function Dashboard() {
               <CardContent className="flex flex-wrap gap-4">
                 <Button
                   onClick={() => router.push('/quiz')}
-                  className="bg-orange-600 hover:bg-orange-700"
+                  className="bg-blue-600 hover:bg-blue-700"
                 >
                   Take Career Quiz
                 </Button>
@@ -254,7 +254,7 @@ export default function Dashboard() {
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-2">
                           <div 
-                            className="bg-orange-600 h-2 rounded-full transition-all duration-300"
+                            className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                             style={{ width: `${roadmap.progress}%` }}
                           ></div>
                         </div>
@@ -276,8 +276,8 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="flex items-center space-x-4">
-                  <div className="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center">
-                    <User className="h-10 w-10 text-orange-600" />
+                  <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center">
+                    <User className="h-10 w-10 text-blue-600" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold">{user.displayName}</h3>

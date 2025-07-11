@@ -4,7 +4,7 @@ import Dashboard from '@/components/Dashboard';
 
 export default function DashboardPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <Header />
       <Dashboard />
       <Footer />
