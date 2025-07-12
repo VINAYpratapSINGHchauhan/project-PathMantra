@@ -15,15 +15,13 @@ export default function Footer() {
               with personalized recommendations and skill gap analysis.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="https://github.com/VINAYpratapSINGHchauhan" className="text-gray-400 hover:text-white transition-colors">
                 <Github className="h-6 w-6" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="https://www.linkedin.com/in/vinay-pratap-singh-chauhan?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app " className="text-gray-400 hover:text-white transition-colors">
                 <Linkedin className="h-6 w-6" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <Mail className="h-6 w-6" />
-              </a>
+              
             </div>
           </div>
           
@@ -50,7 +48,7 @@ export default function Footer() {
         
         <div className="border-t border-gray-800 mt-8 pt-8 text-center">
           <p className="text-gray-400">
-            © 2024 PathMantra. All rights reserved. Built with Next.js and OpenAI.
+            © 2024 PathMantra. All rights reserved .Built by Vinay
           </p>
         </div>
       </div>
