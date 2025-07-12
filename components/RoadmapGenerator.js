@@ -19,7 +19,7 @@ export default function RoadmapGenerator() {
   useEffect(() => {
     const skillGap = localStorage.getItem('skillGapData');
     const career = localStorage.getItem('selectedCareer');
-    
+
     if (skillGap && career) {
       setSkillGapData(JSON.parse(skillGap));
       setSelectedCareer(JSON.parse(career));
@@ -31,7 +31,7 @@ export default function RoadmapGenerator() {
 
   const generateRoadmap = async (skillGap, career) => {
     setLoading(true);
-    
+
     try {
       const response = await fetch('/api/roadmap', {
         method: 'POST',
@@ -115,7 +115,7 @@ export default function RoadmapGenerator() {
           <Card>
             <CardHeader>
               <CardTitle className="text-2xl font-bold text-gray-900">
-                Career Path: {selectedCareer.title}
+                Choosen Career : {selectedCareer.title}
               </CardTitle>
               <CardDescription>
                 {selectedCareer.description}
@@ -193,14 +193,16 @@ export default function RoadmapGenerator() {
                     <h4 className="font-semibold text-blue-700 mb-3">Learning Priorities</h4>
                     <div className="space-y-3">
                       {skillGapData.skill_priorities.map((item, index) => (
-                        <div key={index} className="flex items-start space-x-3">
-                          <Badge
-                            variant={item.priority === 'High' ? 'destructive' : 
-                                   item.priority === 'Medium' ? 'default' : 'secondary'}
-                            className="mt-1"
-                          >
-                            {item.priority}
-                          </Badge>
+                        <div key={index} className="flex items-start space-x-3 ">
+                          <div className="">
+                            <Badge
+                              variant={item.priority === 'High' ? 'destructive' :
+                                item.priority === 'Medium' ? 'default' : 'secondary'}
+                              className="mt-1 "
+                            >
+                              {item.priority}
+                            </Badge>
+                          </div>
                           <div>
                             <p className="font-medium">{item.skill}</p>
                             <p className="text-sm text-gray-600">{item.description}</p>

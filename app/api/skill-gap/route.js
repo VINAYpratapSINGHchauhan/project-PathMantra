@@ -1,11 +1,7 @@
-export const dynamic = 'force-dynamic';
-
 import { NextResponse } from 'next/server';
-import OpenAI from 'openai';
+import axios from 'axios';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+export const dynamic = 'force-dynamic';
 
 export async function POST(request) {
   try {
@@ -31,27 +27,38 @@ export async function POST(request) {
       }
     `;
 
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4",
-      messages: [
-        {
-          role: "system",
-          content: "You are a career advisor AI that analyzes skill gaps for career transitions. Always respond with valid JSON."
+    const completion = await axios.post(
+      'https://openrouter.ai/api/v1/chat/completions',
+      {
+        model: 'mistralai/mistral-7b-instruct',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a career advisor AI that analyzes skill gaps for career transitions. Always respond with valid JSON.',
+          },
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+        temperature: 0.7,
+        max_tokens: 1500,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          
         },
-        {
-          role: "user",
-          content: prompt
-        }
-      ],
-      temperature: 0.7,
-      max_tokens: 1500,
-    });
+      }
+    );
 
-    const response = JSON.parse(completion.choices[0].message.content);
-    
+    const responseText = completion.data.choices[0].message.content;
+    const response = JSON.parse(responseText);
+
     return NextResponse.json(response);
   } catch (error) {
-    console.error('Error analyzing skill gap:', error);
+    console.error('Error analyzing skill gap:', error?.response?.data || error.message);
     return NextResponse.json(
       { error: 'Failed to analyze skill gap' },
       { status: 500 }
