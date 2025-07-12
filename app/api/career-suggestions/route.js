@@ -34,7 +34,7 @@ export async function POST(request) {
     const completion = await axios.post(
       'https://openrouter.ai/api/v1/chat/completions',
       {
-        model: 'mistralai/mistral-7b-instruct', // or another free model like "google/gemma-7b-it"
+        model: 'mistralai/mistral-7b-instruct',
         messages: [
           {
             role: 'system',
