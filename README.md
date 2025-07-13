@@ -85,6 +85,7 @@ Coming soon...
 | Frontend          | Next.js (App Router), JavaScript  |
 | Authentication    | Firebase Google Auth              |
 | Backend (API)     | Firebase Functions, OpenRouter AI |
+| Database          | Firebase firestore database       |
 | UI Component      | redux-ui / react hook form        |
 | Styling           | Tailwind CSS / CSS Modules        |
 | PDF Export        | jsPDF or html2pdf.js              |
