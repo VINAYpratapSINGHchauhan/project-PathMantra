@@ -20,9 +20,11 @@ Coming soon...
 
   Users can securely log in and save their progress using Google Sign-In.
 
+
 - 🧠 **Smart Career Quiz**  
 
   Users enter their skills, interests, education level, and work style through an intuitive quiz form (with **voice input support**).
+
 
 - 🤖 **AI-Powered Career Suggestions**  
 
@@ -31,9 +33,11 @@ Coming soon...
   - Matching percentage
   - Role descriptions
 
+
 - 📉 **Skill Gap Analyzer**  
 
   Compares user input to ideal skills per career and shows what's missing.
+
 
 - 🗺️ **Roadmap Generator**  
 
@@ -51,6 +55,7 @@ Coming soon...
    - Recommended resources and tools
    - Practice projects and milestones
 
+
 - 🔐 **User Authentication & Dashboard**
 
    - Google Sign-In integration with Firebase
@@ -59,9 +64,11 @@ Coming soon...
    - Export roadmaps as PDF
 
 
+
 - 🧾 **User Dashboard**  
 
   Logged-in users can access all their saved roadmaps and career suggestions.
+
 
 - 🎤 **Voice Input **  
 
@@ -97,21 +104,25 @@ Coming soon...
 
 
 1. Clone the repository
-\`\`\`bash
+
+```
 git clone https://github.com/your-username/PathMantra.git
 cd PathMantra
-\`\`\`
+````
 
 
 2. Install dependencies
-\`\`\`bash
+
+```
 npm install
-\`\`\`
+```
 
 
 3. Set up environment variables
-Create a \`.env.local\` file in the root directory:
-\`\`\`env
+
+```
+Create a `.env.local` file in the root directory:
+
 
 
 # open router API Key
@@ -126,7 +137,8 @@ NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_firebase_project_id_here
 NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_firebase_storage_bucket_here
 NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_firebase_messaging_sender_id_here
 NEXT_PUBLIC_FIREBASE_APP_ID=your_firebase_app_id_here
-\`\`\`
+
+```
 
 4. Configure Firebase
 
@@ -136,9 +148,9 @@ NEXT_PUBLIC_FIREBASE_APP_ID=your_firebase_app_id_here
 
 5. Run the development server
 
-\`\`\`bash
+```
 npm run dev
-\`\`\`
+```
 
 6. Open [http://localhost:3000](http://localhost:3000) in your browser
 
