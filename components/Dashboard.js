@@ -22,21 +22,21 @@ export default function Dashboard() {
   }, [user, router]);
 
   useEffect(() => {
-    // In a real app, this would fetch from Firebase
-    // For now, we'll simulate saved data
+    // saved carer and saved roadmaps will be fetched from the firebase database and willl present here form now it is dummy data
+    // work in progress 
     const mockCareers = [
       {
         id: 1,
         title: 'Software Developer',
         match_percentage: 92,
-        salary_range: '$70,000 - $120,000',
+        salary_range: '₹70,000 - ₹120,000',
         saved_date: '2024-01-15'
       },
       {
         id: 2,
         title: 'Data Scientist',
         match_percentage: 88,
-        salary_range: '$80,000 - $130,000',
+        salary_range: '₹80,000 - ₹130,000',
         saved_date: '2024-01-10'
       }
     ];
@@ -73,7 +73,7 @@ export default function Dashboard() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 ">
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
@@ -187,13 +187,13 @@ export default function Dashboard() {
                         </div>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <Button size="sm" variant="outline">
+                        {/* <Button size="sm" variant="outline">
                           <Eye className="h-4 w-4 mr-2" />
                           View
-                        </Button>
+                        </Button> */}
                         <Button size="sm" variant="outline">
                           <Download className="h-4 w-4 mr-2" />
-                          Export
+                          Export /
                         </Button>
                         <Button 
                           size="sm" 
@@ -230,13 +230,13 @@ export default function Dashboard() {
                           </p>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <Button size="sm" variant="outline">
+                          {/* <Button size="sm" variant="outline">
                             <Eye className="h-4 w-4 mr-2" />
                             View
-                          </Button>
+                          </Button> */}
                           <Button size="sm" variant="outline">
                             <Download className="h-4 w-4 mr-2" />
-                            Export
+                            Export /
                           </Button>
                           <Button 
                             size="sm" 
@@ -318,10 +318,10 @@ export default function Dashboard() {
 
                 <div className="pt-4 border-t">
                   <Button variant="outline" className="mr-4">
-                    Update Profile
+                    Update Profile /
                   </Button>
                   <Button variant="destructive">
-                    Delete Account
+                    Delete Account /
                   </Button>
                 </div>
               </CardContent>

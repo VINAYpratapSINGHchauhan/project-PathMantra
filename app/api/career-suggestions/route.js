@@ -24,7 +24,7 @@ export async function POST(request) {
             "description": "Brief description of the role",
             "match_percentage": 85,
             "required_skills": ["skill1", "skill2", "skill3"],
-            "salary_range": "$50,000 - $80,000",
+            "salary_range": "₹50,000 - ₹80,000",
             "growth_potential": "High"
           }
         ]

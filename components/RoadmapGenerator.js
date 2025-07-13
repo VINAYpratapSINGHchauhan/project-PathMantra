@@ -64,7 +64,7 @@ export default function RoadmapGenerator() {
   };
 
   const handleSaveRoadmap = () => {
-    // In a real app, this would save to Firebase
+    // this will be made functional to store this in firebase work in progress
     console.log('Saving roadmap to user dashboard');
   };
 
