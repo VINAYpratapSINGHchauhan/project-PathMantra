@@ -4,57 +4,72 @@
 
 ---
 
+
 ## 🚀 Live Demo
 
 Coming soon...
+
 
 ---
 
 ## 📌 Features
 
+
+
 - 🔐 **Firebase Google Authentication**  
+
   Users can securely log in and save their progress using Google Sign-In.
 
 - 🧠 **Smart Career Quiz**  
+
   Users enter their skills, interests, education level, and work style through an intuitive quiz form (with **voice input support**).
 
 - 🤖 **AI-Powered Career Suggestions**  
+
   User input is sent to the OpenRouter AI (ChatGPT-like API) to return:
   - 3–5 matching career paths
   - Matching percentage
   - Role descriptions
 
 - 📉 **Skill Gap Analyzer**  
+
   Compares user input to ideal skills per career and shows what's missing.
 
 - 🗺️ **Roadmap Generator**  
+
   AI-generated roadmaps per career path including:
-  - Recommended tools
-  - Learning resources
-  - Practice projects  
+   - Recommended tools
+   - Learning resources
+   - Practice projects  
   Users can **save** or **download as PDF**.
 
 
 - 🗺️ **Custom Learning Roadmaps**
-- Detailed 3-6 month learning plans
-- Phase-based progression with timelines
-- Recommended resources and tools
-- Practice projects and milestones
+
+   - Detailed 3-6 month learning plans
+   - Phase-based progression with timelines
+   - Recommended resources and tools
+   - Practice projects and milestones
 
 - 🔐 **User Authentication & Dashboard**
-- Google Sign-In integration with Firebase
-- Personal dashboard to track progress
-- Save and manage career recommendations
-- Export roadmaps as PDF
+
+   - Google Sign-In integration with Firebase
+   - Personal dashboard to track progress
+   - Save and manage career recommendations
+   - Export roadmaps as PDF
 
 
 - 🧾 **User Dashboard**  
+
   Logged-in users can access all their saved roadmaps and career suggestions.
 
-- 🎤 **Voice Input (Optional)**  
+- 🎤 **Voice Input **  
+
   Users can fill the quiz using speech-to-text (ideal for accessibility).
 
+
 ---
+
 
 ## 🛠 Tech Stack
 
@@ -66,6 +81,7 @@ Coming soon...
 | UI Component      | redux-ui / react hook form        |
 | Styling           | Tailwind CSS / CSS Modules        |
 | PDF Export        | jsPDF or html2pdf.js              |
+
 
 ---
 
@@ -79,16 +95,19 @@ Coming soon...
 
 ### Installation
 
+
 1. Clone the repository
 \`\`\`bash
 git clone https://github.com/your-username/PathMantra.git
 cd PathMantra
 \`\`\`
 
+
 2. Install dependencies
 \`\`\`bash
 npm install
 \`\`\`
+
 
 3. Set up environment variables
 Create a \`.env.local\` file in the root directory:
@@ -96,9 +115,11 @@ Create a \`.env.local\` file in the root directory:
 
 
 # open router API Key
+
 OPENROUTER_API_KEY=your_openai_api_key_here
 
 # Firebase Configuration
+
 NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key_here
 NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain_here
 NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_firebase_project_id_here
@@ -108,11 +129,13 @@ NEXT_PUBLIC_FIREBASE_APP_ID=your_firebase_app_id_here
 \`\`\`
 
 4. Configure Firebase
+
 - Create a new Firebase project
 - Enable Authentication and set up Google Sign-In
 - Copy your Firebase config to the environment variables
 
 5. Run the development server
+
 \`\`\`bash
 npm run dev
 \`\`\`
@@ -123,30 +146,35 @@ npm run dev
 ## Key Features Implementation
 
 ### Career Quiz with Voice Input
+
 - Multi-step form with progress tracking
 - Voice-to-text integration using Web Speech API
 - Real-time form validation and user feedback
 - Responsive design for all devices
 
 ### AI-Powered Recommendations
+
 - integration for intelligent career matching
 - Structured prompts for consistent AI responses
 - Error handling and fallback mechanisms
 - Caching for improved performance
 
 ### Skill Gap Analysis
+
 - Dynamic skill comparison algorithms
 - Visual representation of skill gaps
 - Priority-based learning recommendations
 - Integration with career requirements database
 
 ### Learning Roadmaps
+
 - Automated roadmap generation based on skill gaps
 - Timeline-based learning progression
 - Resource recommendations and project suggestions
 - Progress tracking and milestone management
 
 ### User Dashboard
+
 - Comprehensive user profile management
 - Save and organize career recommendations
 - Track learning progress and achievements
