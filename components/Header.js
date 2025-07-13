@@ -5,7 +5,7 @@ import { signOut } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Brain, User, LogOut } from 'lucide-react';
+import { User, LogOut } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Header() {
@@ -26,7 +26,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link href="/" className="flex items-center space-x-2">
-            <Brain className="h-8 w-8 text-blue-700" />
+            <img src="/PathMantraLogo.jpg" className='h-8 w-8' alt="PathMantra-Logo" />
             <span className="text-xl font-bold text-gray-800">PathMantra</span>
           </Link>
           
