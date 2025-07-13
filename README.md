@@ -1,6 +1,6 @@
 # 🧭 PathMantra
 
-**PathMantra** is an AI-powered career path advisor that helps individuals discover their ideal career based on personal skills, interests, education, and work preferences. Built using **Next.js (App Router)**, **Firebase**, **OpenRouter AI**, **Next.js** and ** JavaScript** , it delivers intelligent, personalized recommendations — like a virtual career guru.
+**PathMantra** is an AI-powered career path advisor that helps individuals discover their ideal career based on personal skills, interests, education, and work preferences. Built using **Next.js (App Router)**, **Firebase**, **OpenRouter AI**, **Next.js** and **JavaScript** , it delivers intelligent, personalized recommendations — like a virtual career guru.
 
 ---
 
