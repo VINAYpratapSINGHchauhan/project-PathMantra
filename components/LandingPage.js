@@ -62,21 +62,21 @@ export default function LandingPage() {
   return (
     <main className="flex-1">
       {/* Hero Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-purple-100">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-indigo-700 to-sky-400 text-white">
         <div className="max-w-4xl mx-auto text-center ">
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-8">
+          <h1 className="text-6xl md:text-6xl font-bold  mb-10">
             Find Your Perfect
-            <span className="text-blue-600 block">Career Path</span>
-            <span className="text-emerald-600">with AI</span>
+            <span className=" block">Career Path</span>
+            <span className="text-emerald-400">with AI</span>
           </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
             Get personalized career recommendations, skill gap analysis, and custom learning roadmaps
             powered by advanced AI technology.
           </p>
           <Button
             onClick={handleGetStarted}
             size="lg"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200"
+            className="bg-blue-800 hover:bg-blue-950 text-white px-8 py-4 text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200"
           >
             Get Started
             <ArrowRight className="ml-2 h-5 w-5" />
@@ -85,13 +85,13 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl md:text-4xl font-bold text-black mb-4">
               Why Choose PathMantra?
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-gray-700">
               Discover the features that make PathMantra the ultimate career guidance platform
             </p>
           </div>
@@ -125,7 +125,7 @@ export default function LandingPage() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
+            <div className="text-center border border-gray-500 rounded-xl p-7 shadow-md hover:shadow-xl">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-100 rounded-full mb-4">
                 <span className="text-2xl font-bold text-emerald-600">1</span>
               </div>
@@ -133,7 +133,7 @@ export default function LandingPage() {
               <p className="text-gray-600">Answer questions about your skills, interests, and career goals</p>
             </div>
             
-            <div className="text-center">
+            <div className="text-center border border-gray-500 rounded-xl p-7 shadow-md hover:shadow-xl">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full mb-4">
                 <span className="text-2xl font-bold text-purple-600">2</span>
               </div>
@@ -141,7 +141,7 @@ export default function LandingPage() {
               <p className="text-gray-600">Receive AI-powered career suggestions with match percentages</p>
             </div>
             
-            <div className="text-center">
+            <div className="text-center border border-gray-500 rounded-xl p-7 shadow-md hover:shadow-xl">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
                 <span className="text-2xl font-bold text-blue-600">3</span>
               </div>

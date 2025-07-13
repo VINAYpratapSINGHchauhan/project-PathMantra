@@ -6,7 +6,7 @@ import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Brain, Chrome } from 'lucide-react';
+import { Chrome } from 'lucide-react';
 
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);
@@ -30,7 +30,7 @@ export default function LoginForm() {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
-            <Brain className="h-12 w-12 text-blue-600" />
+            <img src="PathMantraLogo.jpg" alt="path-mantra logo" className='h-12 w-12' />     \
           </div>
           <CardTitle className="text-2xl font-bold">Welcome to PathMantra</CardTitle>
           <CardDescription>
@@ -46,7 +46,7 @@ export default function LoginForm() {
             <Chrome className="mr-2 h-5 w-5" />
             {loading ? 'Signing in...' : 'Sign in with Google'}
           </Button>
-          
+
           <div className="text-center text-sm text-gray-600">
             <p>
               By signing in, you agree to our{' '}
