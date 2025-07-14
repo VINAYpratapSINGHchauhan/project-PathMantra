@@ -30,7 +30,7 @@ export default function LoginForm() {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
-            <img src="PathMantraLogo.jpg" alt="path-mantra logo" className='h-12 w-12' />     \
+            <img src="PathMantraLogo.jpg" alt="path-mantra logo" className='h-12 w-12' />     
           </div>
           <CardTitle className="text-2xl font-bold">Welcome to PathMantra</CardTitle>
           <CardDescription>
