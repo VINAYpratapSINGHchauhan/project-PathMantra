@@ -8,6 +8,10 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { CheckCircle, XCircle, Clock, Download, Save, ArrowLeft } from 'lucide-react';
 import { generatePDF } from '@/lib/utils';
+import {db} from '@/lib/firebase';
+import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { useAuth } from '@/lib/auth-context';
+
 
 export default function RoadmapGenerator() {
   const [skillGapData, setSkillGapData] = useState(null);
@@ -15,6 +19,7 @@ export default function RoadmapGenerator() {
   const [roadmapData, setRoadmapData] = useState(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const {user}=useAuth();
 
   useEffect(() => {
     const skillGap = localStorage.getItem('skillGapData');
@@ -63,9 +68,25 @@ export default function RoadmapGenerator() {
     }
   };
 
-  const handleSaveRoadmap = () => {
-    // this will be made functional to store this in firebase work in progress
+  const handleSaveRoadmap = async () => {
     console.log('Saving roadmap to user dashboard');
+    const userRef = doc(db, 'users', user.uid);
+    const presentUser = await getDoc(userRef);
+
+    if (presentUser.exists()) {
+      console.log('✅ User already exists');
+    } else {
+      // Create new user
+      await setDoc(userRef, {
+        name: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+        joinedAt: serverTimestamp(),
+        savedCareer: selectedCareer.title
+      });
+      console.log('🆕 User created in Firestore');
+    }
+  
   };
 
   if (!skillGapData || !selectedCareer) {

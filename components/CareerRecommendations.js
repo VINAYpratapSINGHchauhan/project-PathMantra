@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { TrendingUp, DollarSign, Target, ArrowRight } from 'lucide-react';
+import { TrendingUp, IndianRupee , Target, ArrowRight } from 'lucide-react';
 
 export default function CareerRecommendations() {
   const [recommendations, setRecommendations] = useState(null);
@@ -103,7 +103,7 @@ export default function CareerRecommendations() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex items-center space-x-2">
-                    <DollarSign className="h-5 w-5 text-green-600" />
+                    <IndianRupee  className="h-5 w-5 text-green-600" />
                     <div>
                       <p className="text-sm font-medium text-gray-700">Salary Range</p>
                       <p className="text-sm text-gray-600">{career.salary_range}</p>
