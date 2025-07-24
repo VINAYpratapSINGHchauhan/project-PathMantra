@@ -8,8 +8,8 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { CheckCircle, XCircle, Clock, Download, Save, ArrowLeft } from 'lucide-react';
 import { generatePDF } from '@/lib/utils';
-import {db} from '@/lib/firebase';
-import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { useAuth } from '@/lib/auth-context';
 
 
@@ -19,7 +19,7 @@ export default function RoadmapGenerator() {
   const [roadmapData, setRoadmapData] = useState(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const {user}=useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
     const skillGap = localStorage.getItem('skillGapData');
@@ -68,25 +68,45 @@ export default function RoadmapGenerator() {
     }
   };
 
+
   const handleSaveRoadmap = async () => {
-    console.log('Saving roadmap to user dashboard');
+    if (!user) return;
+
     const userRef = doc(db, 'users', user.uid);
     const presentUser = await getDoc(userRef);
 
     if (presentUser.exists()) {
-      console.log('✅ User already exists');
+      const data = presentUser.data();
+      const savedCareers = data.savedCareer || [];
+
+    
+      const alreadyExists = savedCareers.some(
+        (career) => career.title === selectedCareer.title
+      );
+
+      if (alreadyExists) {
+        console.log(' Roadmap already saved');
+        return;
+      }
+
+      const updatedCareers = [...savedCareers, selectedCareer];
+
+      await updateDoc(userRef, {
+        savedCareer: updatedCareers
+      });
+
+      console.log('Roadmap added to saved careers');
     } else {
-      // Create new user
       await setDoc(userRef, {
         name: user.displayName,
         email: user.email,
         photoURL: user.photoURL,
         joinedAt: serverTimestamp(),
-        savedCareer: selectedCareer.title
+        savedCareer: [selectedCareer] 
       });
-      console.log('🆕 User created in Firestore');
+
+      console.log(' User created and roadmap saved');
     }
-  
   };
 
   if (!skillGapData || !selectedCareer) {
