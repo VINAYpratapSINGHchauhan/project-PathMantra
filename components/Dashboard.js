@@ -8,6 +8,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { User, Briefcase, Map, Download, Eye, Trash2 } from 'lucide-react';
+import { doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import {toast} from 'react-toastify';
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -21,26 +24,29 @@ export default function Dashboard() {
     }
   }, [user, router]);
 
-  useEffect(() => {
-    // saved carer and saved roadmaps will be fetched from the firebase database and willl present here form now it is dummy data
-    // work in progress 
-    const mockCareers = [
-      {
-        id: 1,
-        title: 'Software Developer',
-        match_percentage: 92,
-        salary_range: '₹70,000 - ₹120,000',
-        saved_date: '2024-01-15'
-      },
-      {
-        id: 2,
-        title: 'Data Scientist',
-        match_percentage: 88,
-        salary_range: '₹80,000 - ₹130,000',
-        saved_date: '2024-01-10'
+  const fetchUserData = async () => {
+    try {
+      const userRef = doc(db, 'users', user.uid);
+      const presentUser = await getDoc(userRef);
+
+      if (presentUser.exists()) {
+        const data = presentUser.data();
+        setSavedCareers(data.savedCareer || []);
+        return data;
+      } else {
+        toast.info('User data not found.');
+        return null;
       }
-    ];
-    
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      toast.error('Failed to fetch user data');
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    if (!user) return;
+    fetchUserData();
     const mockRoadmaps = [
       {
         id: 1,
@@ -57,14 +63,33 @@ export default function Dashboard() {
         created_date: '2024-01-10'
       }
     ];
-
-    setSavedCareers(mockCareers);
     setSavedRoadmaps(mockRoadmaps);
-  }, []);
+  }, [user]);
 
-  const handleDeleteCareer = (id) => {
-    setSavedCareers(prev => prev.filter(career => career.id !== id));
+  const handleDeleteCareer = async (titleToDelete) => {
+    try {
+      const data = await fetchUserData();
+      if (!data) return;
+
+      const currentCareers = data.savedCareer || [];
+      const updatedCareers = currentCareers.filter(
+        (career) => career.title !== titleToDelete
+      );
+
+      const userRef = doc(db, 'users', user.uid);
+      await updateDoc(userRef, {
+        savedCareer: updatedCareers,
+      });
+
+      setSavedCareers(updatedCareers); 
+      toast.success(`Career Deleted successfully!`);
+    } catch (error) {
+      console.error('Error deleting career:', error);
+      toast.error('Failed to delete career');
+    }
   };
+
+
 
   const handleDeleteRoadmap = (id) => {
     setSavedRoadmaps(prev => prev.filter(roadmap => roadmap.id !== id));
@@ -106,7 +131,7 @@ export default function Dashboard() {
                   </p>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Active Roadmaps</CardTitle>
@@ -119,7 +144,7 @@ export default function Dashboard() {
                   </p>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Account Status</CardTitle>
@@ -168,7 +193,7 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {savedCareers.map((career) => (
+                  {savedCareers.length > 0 ? savedCareers.map((career) => (
                     <div key={career.id} className="flex items-center justify-between p-4 border rounded-lg">
                       <div className="flex-1">
                         <div className="flex items-center space-x-4">
@@ -187,24 +212,26 @@ export default function Dashboard() {
                         </div>
                       </div>
                       <div className="flex items-center space-x-2">
-                        {/* <Button size="sm" variant="outline">
+                        <Button size="sm" variant="outline">
                           <Eye className="h-4 w-4 mr-2" />
                           View
-                        </Button> */}
+                        </Button>
                         <Button size="sm" variant="outline">
                           <Download className="h-4 w-4 mr-2" />
                           Export /
                         </Button>
-                        <Button 
-                          size="sm" 
+                        <Button
+                          size="sm"
                           variant="destructive"
-                          onClick={() => handleDeleteCareer(career.id)}
+                          onClick={() => handleDeleteCareer(career.title)}
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
                     </div>
-                  ))}
+                  )) : <div className="text-gray-500 text-center p-4">
+                    No saved careers yet. Start exploring your options!
+                  </div>}
                 </div>
               </CardContent>
             </Card>
@@ -238,8 +265,8 @@ export default function Dashboard() {
                             <Download className="h-4 w-4 mr-2" />
                             Export /
                           </Button>
-                          <Button 
-                            size="sm" 
+                          <Button
+                            size="sm"
                             variant="destructive"
                             onClick={() => handleDeleteRoadmap(roadmap.id)}
                           >
@@ -253,7 +280,7 @@ export default function Dashboard() {
                           <span>{roadmap.progress}%</span>
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-2">
-                          <div 
+                          <div
                             className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                             style={{ width: `${roadmap.progress}%` }}
                           ></div>
@@ -284,7 +311,7 @@ export default function Dashboard() {
                     <p className="text-gray-600">{user.email}</p>
                   </div>
                 </div>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
