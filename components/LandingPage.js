@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowRight, Brain, Target, Map, Users, CheckCircle, Star } from 'lucide-react';
+import { toast } from 'react-toastify';
+
 
 export default function LandingPage() {
   const { user } = useAuth();
@@ -58,7 +60,7 @@ export default function LandingPage() {
       content: "Finally found my perfect career path. The AI recommendations were amazingly accurate."
     }
   ];
-
+  
   return (
     <main className="flex-1">
       {/* Hero Section */}

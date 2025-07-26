@@ -1,7 +1,9 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
 import { AuthProvider } from '@/lib/auth-context';
-import { Toaster } from '@/components/ui/toaster';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -15,13 +17,13 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-        </head>
-          <body className={inter.className}>
-            <AuthProvider>
-              {children}
-              <Toaster />
-            </AuthProvider>
-          </body>
-        </html>
-        );
+      </head>
+      <body className={inter.className}>
+        <AuthProvider>
+          {children}
+          <ToastContainer position="top-right" autoClose={3000} />
+        </AuthProvider>
+      </body>
+    </html>
+  );
 }

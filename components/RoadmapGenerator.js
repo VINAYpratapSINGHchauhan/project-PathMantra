@@ -11,7 +11,7 @@ import { generatePDF } from '@/lib/utils';
 import { db } from '@/lib/firebase';
 import { doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { useAuth } from '@/lib/auth-context';
-
+import { toast } from 'react-toastify';
 
 export default function RoadmapGenerator() {
   const [skillGapData, setSkillGapData] = useState(null);
@@ -79,13 +79,13 @@ export default function RoadmapGenerator() {
       const data = presentUser.data();
       const savedCareers = data.savedCareer || [];
 
-    
+
       const alreadyExists = savedCareers.some(
         (career) => career.title === selectedCareer.title
       );
 
       if (alreadyExists) {
-        console.log(' Roadmap already saved');
+        toast.info('Roadmap Already Exist!')
         return;
       }
 
@@ -95,17 +95,26 @@ export default function RoadmapGenerator() {
         savedCareer: updatedCareers
       });
 
-      console.log('Roadmap added to saved careers');
+      toast.success(
+        <div>
+          <strong>Roadmap Added Successfuly !</strong>
+          <div>check your Dashborad for details. </div>
+        </div>
+      )
     } else {
       await setDoc(userRef, {
         name: user.displayName,
         email: user.email,
         photoURL: user.photoURL,
         joinedAt: serverTimestamp(),
-        savedCareer: [selectedCareer] 
+        savedCareer: [selectedCareer]
       });
-
-      console.log(' User created and roadmap saved');
+      toast.success(
+        <div>
+          <strong>Roadmap Created Successfuly !</strong>
+          <div>check your Dashborad for details. </div>
+        </div>
+      )
     }
   };
 
