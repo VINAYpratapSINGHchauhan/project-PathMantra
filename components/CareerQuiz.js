@@ -207,7 +207,7 @@ export default function CareerQuiz() {
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold">Education & Experience</h3>
                 <div className="space-y-2">
-                  <Label>What's your highest level of education?</Label>
+                  <Label>What&apos;s your highest level of education?</Label>
                   <Select value={formData.education} onValueChange={(value) => handleInputChange('education', value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select your education level" />

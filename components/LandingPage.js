@@ -175,7 +175,7 @@ export default function LandingPage() {
                       <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
                     ))}
                   </div>
-                  <p className="text-gray-600 mb-4">"{testimonial.content}"</p>
+                  <p className="text-gray-600 mb-4">&quot;{testimonial.content}&quot;</p>
                   <div>
                     <p className="font-semibold text-gray-900">{testimonial.name}</p>
                     <p className="text-sm text-gray-500">{testimonial.role}</p>
@@ -194,7 +194,7 @@ export default function LandingPage() {
             Ready to Transform Your Career?
           </h2>
           <p className="text-xl text-blue-100 mb-8">
-            Join thousands of professionals who've discovered their ideal career path with PathMantra
+            Join thousands of professionals who&apos;ve discovered their ideal career path with PathMantra
           </p>
           <Button
             onClick={handleGetStarted}

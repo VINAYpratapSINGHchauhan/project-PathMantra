@@ -202,7 +202,7 @@ export default function RoadmapGenerator() {
                 Skill Gap Analysis
               </CardTitle>
               <CardDescription>
-                Here's how your current skills align with the requirements
+                Here&apos;s how your current skills align with the requirements
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
