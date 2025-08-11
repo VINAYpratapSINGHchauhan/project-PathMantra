@@ -4,11 +4,8 @@
 
 ---
 
-
-## 🚀 Live Demo
-
-Coming soon...
-
+# Successfully deployed on 
+https://project-path-mantra-43xy0nbgc-vinay-chauhans-projects-21715925.vercel.app/
 
 ---
 
