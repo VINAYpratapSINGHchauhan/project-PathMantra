@@ -150,8 +150,8 @@ export default function CareerQuiz() {
             <CardTitle className="text-2xl font-bold text-center">
               Career Discovery Quiz
             </CardTitle>
-            <CardDescription className="text-center">
-              Step {step} of 4 - Tell us about yourself to get personalized recommendations
+            <CardDescription className="md:text-center text-left">
+              Step {step} of 4 - <br></br>Tell us about yourself to get personalized recommendations
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -292,7 +292,7 @@ export default function CareerQuiz() {
               </div>
             )}
 
-            <div className="flex justify-between pt-6">
+            <div className="flex md:flex-row flex-col justify-between pt-6 gap-2">
               {step > 1 && (
                 <Button variant="outline" onClick={prevStep}>
                   Previous
@@ -306,7 +306,7 @@ export default function CareerQuiz() {
                 <Button 
                   onClick={handleSubmit} 
                   disabled={loading}
-                  className="ml-auto bg-blue-600 hover:bg-blue-700"
+                  className="ml-auto bg-blue-600 hover:bg-blue-700 w-full"
                 >
                   {loading ? 'Analyzing...' : 'Get My Recommendations'}
                 </Button>
