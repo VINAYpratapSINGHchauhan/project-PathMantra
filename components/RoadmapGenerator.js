@@ -132,7 +132,7 @@ export default function RoadmapGenerator() {
   return (
     <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex md:flex-row flex-col items-center justify-between mb-8 gap-1">
           <Button
             variant="outline"
             onClick={() => router.push('/recommendations')}
@@ -141,26 +141,26 @@ export default function RoadmapGenerator() {
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Recommendations
           </Button>
-          <div className="flex space-x-4">
+          <div className="flex space-x-2">
             <Button
               onClick={handleSaveRoadmap}
               variant="outline"
-              className="flex items-center"
+              className="flex items-center w-fit"
             >
               <Save className="mr-2 h-4 w-4" />
-              Save Roadmap
+              Save
             </Button>
             <Button
               onClick={handleDownloadPDF}
               className="flex items-center bg-emerald-600 hover:bg-emerald-700"
             >
               <Download className="mr-2 h-4 w-4" />
-              Download PDF
+              Download
             </Button>
           </div>
         </div>
 
-        <div id="roadmap-content" className="space-y-8">
+        <div id="roadmap-content" className="space-y-4">
           {/* Career Overview */}
           <Card>
             <CardHeader>
@@ -172,24 +172,24 @@ export default function RoadmapGenerator() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="text-center">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 ">
+                <div className="md:text-center">
+                  <p className="text-sm text-gray-600">Compatibility Score</p>
                   <Badge variant="secondary" className="text-lg font-semibold mb-2">
                     {selectedCareer.match_percentage}% Match
                   </Badge>
-                  <p className="text-sm text-gray-600">Compatibility Score</p>
                 </div>
-                <div className="text-center">
+                <div className="md:text-center">
+                  <p className="text-sm text-gray-600">Salary Range</p>
                   <p className="text-lg font-semibold text-green-600 mb-2">
                     {selectedCareer.salary_range}
                   </p>
-                  <p className="text-sm text-gray-600">Salary Range</p>
                 </div>
-                <div className="text-center">
+                <div className="md:text-center">
+                  <p className="text-sm text-gray-600">Growth Potential</p>
                   <p className="text-lg font-semibold text-blue-600 mb-2">
                     {selectedCareer.growth_potential}
                   </p>
-                  <p className="text-sm text-gray-600">Growth Potential</p>
                 </div>
               </div>
             </CardContent>
