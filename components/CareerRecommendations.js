@@ -68,10 +68,10 @@ export default function CareerRecommendations() {
     <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">
             Your Career Recommendations
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="md:text-lg text-sm text-gray-600">
             Based on your skills, interests, and preferences, here are your top career matches
           </p>
         </div>
@@ -80,11 +80,11 @@ export default function CareerRecommendations() {
           {recommendations.careers?.map((career, index) => (
             <Card key={index} className="hover:shadow-lg transition-shadow duration-200">
               <CardHeader>
-                <div className="flex items-center justify-between">
+                <div className="flex md:flex-row flex-col md:items-center justify-between md:gap-0 gap-1">
                   <CardTitle className="text-xl font-bold text-gray-900">
                     {career.title}
                   </CardTitle>
-                  <Badge variant="secondary" className="text-lg font-semibold">
+                  <Badge variant="secondary" className="text-sm font-semibold w-fit">
                     {career.match_percentage}% Match
                   </Badge>
                 </div>
