@@ -4,11 +4,8 @@
 
 ---
 
-
-## 🚀 Live Demo
-
-Coming soon...
-
+# Vercel Deployed link
+https://project-path-mantra-43xy0nbgc-vinay-chauhans-projects-21715925.vercel.app/
 
 ---
 
@@ -212,14 +209,6 @@ Creates detailed learning roadmaps for specific career paths.
 - Input validation and sanitization
 - CORS protection for API endpoints
 
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (\`git checkout -b feature/amazing-feature\`)
-3. Commit your changes (\`git commit -m 'Add amazing feature'\`)
-4. Push to the branch (\`git push origin feature/amazing-feature\`)
-5. Open a Pull Request
 
 
-Built with ❤️ by the PathMantra team
-\`\`\`
+Built with ❤️ by vinay
