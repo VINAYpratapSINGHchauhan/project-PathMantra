@@ -2,7 +2,7 @@
 export default function AboutPage() {
     return (
         <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
-            <main className="flex-grow max-w-5xl mx-auto px-6 py-16">
+            <main className="flex-grow max-w-5xl mx-auto px-6 py-16 bg-white rounded-lg shadow-md">
                 <h1 className="text-4xl font-extrabold text-gray-900 mb-6 text-center">
                     About <span className="text-indigo-600">PathMantra</span>
                 </h1>
