@@ -147,8 +147,8 @@ export default function CareerQuiz() {
       <div className="max-w-2xl mx-auto">
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl font-bold text-center">
-              Career Discovery Quiz
+            <CardTitle className="text-2xl  font-bold text-center mb-3">
+              Career Quiz :
             </CardTitle>
             <CardDescription className="md:text-center text-left">
               Step {step} of 4 - <br></br>Tell us about yourself to get personalized recommendations
@@ -299,7 +299,7 @@ export default function CareerQuiz() {
                 </Button>
               )}
               {step < 4 ? (
-                <Button onClick={nextStep} className="ml-auto">
+                <Button onClick={nextStep} className="ml-auto w-full">
                   Next
                 </Button>
               ) : (
