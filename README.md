@@ -5,7 +5,7 @@
 ---
 
 # Website live link
-[](https://project-path-mantra.vercel.app/)
+https://project-path-mantra.vercel.app/
 
 ## 📌 Features
 
