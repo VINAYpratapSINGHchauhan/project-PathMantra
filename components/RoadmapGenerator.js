@@ -66,6 +66,7 @@ export default function RoadmapGenerator() {
     if (element) {
       generatePDF(element, `${selectedCareer?.title}-roadmap.pdf`);
     }
+    toast.success('PDF downloaded successfully!');
   };
 
 
@@ -97,8 +98,8 @@ export default function RoadmapGenerator() {
 
       toast.success(
         <div>
-          <strong>Roadmap Added Successfuly !</strong>
-          <div>check your Dashborad for details. </div>
+          <strong>Roadmap Saved Successfuly !</strong>
+          <div>check Dashborad for details. </div>
         </div>
       )
     } else {
@@ -111,8 +112,8 @@ export default function RoadmapGenerator() {
       });
       toast.success(
         <div>
-          <strong>Roadmap Created Successfuly !</strong>
-          <div>check your Dashborad for details. </div>
+          <strong>Roadmap Saved Successfuly !</strong>
+          <div>check Dashborad for details. </div>
         </div>
       )
     }
