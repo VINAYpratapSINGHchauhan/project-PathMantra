@@ -7,6 +7,9 @@ import { auth } from '@/lib/firebase';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Chrome } from 'lucide-react';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { toast } from 'react-toastify';
 
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);
@@ -16,21 +19,39 @@ export default function LoginForm() {
     setLoading(true);
     try {
       const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      const userRef = doc(db, 'users', user.uid);
+      const docSnap = await getDoc(userRef);
+
+      if (!docSnap.exists()) {
+        await setDoc(userRef, {
+          uid: user.uid,
+          name: user.displayName || '',
+          email: user.email || '',
+          photoURL: user.photoURL || '',
+          createdAt: new Date(),
+          savedCareers: []
+        });
+        toast.success("Logged in Successfully!");
+      } else {
+        toast.success("Welcome back!");
+      }
       router.push('/quiz');
     } catch (error) {
-      console.error('Error signing in with Google:', error);
+      toast.error(`Error signing in: ${error.message}`);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-[90vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
-            <img src="PathMantraLogo.jpg" alt="path-mantra logo" className='h-12 w-12' />     
+            <img src="PathMantraLogo.jpg" alt="path-mantra logo" className='h-12 w-12' />
           </div>
           <CardTitle className="text-2xl font-bold">Welcome to PathMantra</CardTitle>
           <CardDescription>
