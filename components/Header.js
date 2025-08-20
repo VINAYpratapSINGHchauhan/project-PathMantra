@@ -32,7 +32,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link href="/" className="flex items-center space-x-2">
-            <img src="/PathMantraLogo.jpg" className='h-8 w-8' alt="PathMantra-Logo" />
+            <img src="/PathMantra-bg.png" className='h-8 w-8' alt="PathMantra-Logo" />
             <span className="text-xl font-bold text-gray-800">PathMantra</span>
           </Link>
 
@@ -40,22 +40,25 @@ export default function Header() {
             <Link href="/" className="text-gray-800 hover:text-black  hover:font-semibold transition-colors">
               Home
             </Link>
-            {user && (
-              <Link href="/dashboard" className="text-gray-800 hover:text-black hover:font-semibold  transition-colors">
-                Dashboard
-              </Link>
-            )}
+            <Link href="/quiz" className="text-gray-800 hover:text-black  hover:font-semibold transition-colors ">
+              Find Your Path
+            </Link>
             <Link href="/about" className="text-gray-800 hover:text-black  hover:font-semibold transition-colors">
               About
+            </Link>
+            <Link href="/contact" className="text-gray-800 hover:text-black  hover:font-semibold transition-colors">
+              Contact
             </Link>
           </nav>
 
           <div className=" hidden md:flex items-center space-x-4">
             {user ? (
               <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-2">
-                  <User className="h-5 w-5 text-gray-800  " />
-                  <span className="text-sm text-gray-800 hover:text-black  hover:font-semibold ">{user.displayName}</span>
+                <div className="">
+                  <Link href="/dashboard" className="text-gray-800 hover:text-black hover:font-semibold  flex items-center space-x-2 transition-colors">
+                    <User className="h-5 w-5 hover:text-black hover:font-semibold" />
+                    <span>{user.displayName}</span>
+                  </Link >
                 </div>
                 <Button
                   variant="outline"
@@ -86,19 +89,21 @@ export default function Header() {
                   Home
                 </Link>
                 <Link href="/quiz" className="text-black font-semibold ">
-                  Career Quiz
+                  Find Your Path
                 </Link>
                 <Link href="/about" className="text-black font-semibold ">
                   About
                 </Link>
+                <Link href="/contact" className="text-black font-semibold ">
+                  Contact
+                </Link>
                 {user ? (
                   <div className="flex flex-col space-y-5">
-                    <Link href="/dashboard" className="text-black font-semibold ">
-                      Dashboard
-                    </Link>
                     <div className="flex items-center space-x-2">
-                      <User className="h-5 w-5 text-black " />
-                      <span className="text-sm text-black font-semibold ">{user.displayName}</span>
+                      <Link href="/dashboard" className="text-black font-semibold ">
+                        <User className="h-5 w-5 text-black " />
+                        <span className="text-sm text-black font-semibold ">{user.displayName}</span>
+                      </Link>
                     </div>
                     <Button
                       variant="outline"
