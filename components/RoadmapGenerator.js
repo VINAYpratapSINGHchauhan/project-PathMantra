@@ -68,7 +68,7 @@ export default function RoadmapGenerator() {
     }
     toast.success('PDF downloaded successfully!');
   };
-
+  
 
   const handleSaveRoadmap = async () => {
     if (!user) return;
@@ -78,7 +78,7 @@ export default function RoadmapGenerator() {
 
     if (presentUser.exists()) {
       const data = presentUser.data();
-      const savedCareers = data.savedCareer || [];
+      const savedCareers = data.savedCareers || [];
 
 
       const alreadyExists = savedCareers.some(
@@ -93,7 +93,7 @@ export default function RoadmapGenerator() {
       const updatedCareers = [...savedCareers, selectedCareer];
 
       await updateDoc(userRef, {
-        savedCareer: updatedCareers
+        savedCareers: updatedCareers
       });
 
       toast.success(
@@ -108,7 +108,7 @@ export default function RoadmapGenerator() {
         email: user.email,
         photoURL: user.photoURL,
         joinedAt: serverTimestamp(),
-        savedCareer: [selectedCareer]
+        savedCareers: [selectedCareer]
       });
       toast.success(
         <div>

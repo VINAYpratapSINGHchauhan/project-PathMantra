@@ -8,15 +8,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { User, Briefcase, Map, Download, Eye, Trash2 } from 'lucide-react';
-import { doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc, serverTimestamp, deleteDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
+import { getAuth, GoogleAuthProvider, reauthenticateWithPopup, deleteUser } from "firebase/auth";
 
 export default function Dashboard() {
   const { user } = useAuth();
   const router = useRouter();
   const [savedCareers, setSavedCareers] = useState([]);
-  const [savedRoadmaps, setSavedRoadmaps] = useState([]);
 
   useEffect(() => {
     if (!user) {
@@ -31,7 +31,7 @@ export default function Dashboard() {
 
       if (presentUser.exists()) {
         const data = presentUser.data();
-        setSavedCareers(data.savedCareer || []);
+        setSavedCareers(data.savedCareers || []);
         return data;
       } else {
         toast.info('User data not found.');
@@ -47,23 +47,7 @@ export default function Dashboard() {
   useEffect(() => {
     if (!user) return;
     fetchUserData();
-    const mockRoadmaps = [
-      {
-        id: 1,
-        career: 'Software Developer',
-        duration: '4 months',
-        progress: 25,
-        created_date: '2024-01-15'
-      },
-      {
-        id: 2,
-        career: 'Data Scientist',
-        duration: '6 months',
-        progress: 10,
-        created_date: '2024-01-10'
-      }
-    ];
-    setSavedRoadmaps(mockRoadmaps);
+
   }, [user]);
 
   const handleDeleteCareer = async (titleToDelete) => {
@@ -71,17 +55,17 @@ export default function Dashboard() {
       const data = await fetchUserData();
       if (!data) return;
 
-      const currentCareers = data.savedCareer || [];
+      const currentCareers = data.savedCareers || [];
       const updatedCareers = currentCareers.filter(
         (career) => career.title !== titleToDelete
       );
 
       const userRef = doc(db, 'users', user.uid);
       await updateDoc(userRef, {
-        savedCareer: updatedCareers,
+        savedCareers: updatedCareers,
       });
 
-      setSavedCareers(updatedCareers); 
+      setSavedCareers(updatedCareers);
       toast.success(`Career Deleted successfully!`);
     } catch (error) {
       console.error('Error deleting career:', error);
@@ -89,10 +73,21 @@ export default function Dashboard() {
     }
   };
 
+  const handleDeleteAccount = async () => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+     const provider = new GoogleAuthProvider();
+      await reauthenticateWithPopup(user, provider);
 
-
-  const handleDeleteRoadmap = (id) => {
-    setSavedRoadmaps(prev => prev.filter(roadmap => roadmap.id !== id));
+    try {
+      await deleteDoc(doc(db, "users", user.uid));
+      await deleteUser(user);
+      toast.success("Account deleted Successfully");
+      router.push("/login");
+    } catch (error) {
+      toast.error("Error deleting user:", error);
+      console.log(error);
+    }
   };
 
   if (!user) return null;
@@ -110,10 +105,9 @@ export default function Dashboard() {
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="careers">Saved Careers</TabsTrigger>
-            <TabsTrigger value="roadmaps">Roadmaps</TabsTrigger>
             <TabsTrigger value="profile">Profile</TabsTrigger>
           </TabsList>
 
@@ -132,18 +126,7 @@ export default function Dashboard() {
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Active Roadmaps</CardTitle>
-                  <Map className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{savedRoadmaps.length}</div>
-                  <p className="text-xs text-muted-foreground">
-                    Learning plans in progress
-                  </p>
-                </CardContent>
-              </Card>
+
 
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -194,14 +177,12 @@ export default function Dashboard() {
               <CardContent>
                 <div className="space-y-4">
                   {savedCareers.length > 0 ? savedCareers.map((career) => (
-                    <div key={career.id} className="flex items-center justify-between p-4 border rounded-lg">
+                    <div key={career.title} className="flex items-center justify-between p-4 border rounded-lg">
                       <div className="flex-1">
                         <div className="flex items-center space-x-4">
                           <div>
                             <h3 className="font-semibold text-gray-900">{career.title}</h3>
-                            <p className="text-sm text-gray-600">
-                              Saved on {new Date(career.saved_date).toLocaleDateString()}
-                            </p>
+
                           </div>
                           <Badge variant="secondary">
                             {career.match_percentage}% Match
@@ -212,20 +193,22 @@ export default function Dashboard() {
                         </div>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <Button size="sm" variant="outline">
+                        <Button size="sm" variant="outline" className='bg-blue-500 text-white'>
                           <Eye className="h-4 w-4 mr-2" />
                           View
                         </Button>
-                        <Button size="sm" variant="outline">
+                        {/* <Button size="sm" variant="outline" className=' bg-green-500 text-white' onClick={handleDownloadPDF}>
                           <Download className="h-4 w-4 mr-2" />
-                          Export /
-                        </Button>
+                          Download
+                        </Button> */}
                         <Button
+
                           size="sm"
                           variant="destructive"
                           onClick={() => handleDeleteCareer(career.title)}
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 className="h-4 w-4 mr-2" />
+                          Delete
                         </Button>
                       </div>
                     </div>
@@ -237,61 +220,7 @@ export default function Dashboard() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="roadmaps" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Learning Roadmaps</CardTitle>
-                <CardDescription>
-                  Track your progress on personalized learning paths
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {savedRoadmaps.map((roadmap) => (
-                    <div key={roadmap.id} className="p-4 border rounded-lg">
-                      <div className="flex items-center justify-between mb-3">
-                        <div>
-                          <h3 className="font-semibold text-gray-900">{roadmap.career}</h3>
-                          <p className="text-sm text-gray-600">
-                            {roadmap.duration} plan • Created {new Date(roadmap.created_date).toLocaleDateString()}
-                          </p>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          {/* <Button size="sm" variant="outline">
-                            <Eye className="h-4 w-4 mr-2" />
-                            View
-                          </Button> */}
-                          <Button size="sm" variant="outline">
-                            <Download className="h-4 w-4 mr-2" />
-                            Export /
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="destructive"
-                            onClick={() => handleDeleteRoadmap(roadmap.id)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span>Progress</span>
-                          <span>{roadmap.progress}%</span>
-                        </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2">
-                          <div
-                            className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                            style={{ width: `${roadmap.progress}%` }}
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
+
 
           <TabsContent value="profile" className="space-y-6">
             <Card>
@@ -347,8 +276,8 @@ export default function Dashboard() {
                   <Button variant="outline" className="mr-4">
                     Update Profile /
                   </Button>
-                  <Button variant="destructive">
-                    Delete Account /
+                  <Button variant="destructive" onClick={handleDeleteAccount}>
+                    Delete Account
                   </Button>
                 </div>
               </CardContent>
