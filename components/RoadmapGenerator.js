@@ -12,6 +12,8 @@ import { db } from '@/lib/firebase';
 import { doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { useAuth } from '@/lib/auth-context';
 import { toast } from 'react-toastify';
+import { ChevronDown, ChevronUp } from "lucide-react";
+
 
 export default function RoadmapGenerator() {
   const [skillGapData, setSkillGapData] = useState(null);
@@ -61,14 +63,19 @@ export default function RoadmapGenerator() {
     }
   };
 
-  const handleDownloadPDF = () => {
+  const handleDownloadPDF = async () => {
+    const previousExpanded = expandedPhase;
+    setExpandedPhase("all");
+    await new Promise(resolve => setTimeout(resolve, 300));
     const element = document.getElementById('roadmap-content');
     if (element) {
-      generatePDF(element, `${selectedCareer?.title}-roadmap.pdf`);
+      await generatePDF(element, `${selectedCareer?.title}-roadmap.pdf`);
     }
+    setExpandedPhase(previousExpanded);
     toast.success('PDF downloaded successfully!');
   };
-  
+
+
 
   const handleSaveRoadmap = async () => {
     if (!user) return;
@@ -98,8 +105,7 @@ export default function RoadmapGenerator() {
 
       toast.success(
         <div>
-          <strong>Roadmap Saved Successfuly !</strong>
-          <div>check Dashborad for details. </div>
+          <div>Roadmap Saved Successfuly ! </div>
         </div>
       )
     } else {
@@ -117,6 +123,11 @@ export default function RoadmapGenerator() {
         </div>
       )
     }
+  };
+  const [expandedPhase, setExpandedPhase] = useState(null);
+
+  const togglePhase = (index) => {
+    setExpandedPhase(expandedPhase === index ? null : index);
   };
 
   if (!skillGapData || !selectedCareer) {
@@ -212,7 +223,7 @@ export default function RoadmapGenerator() {
                   <CheckCircle className="mr-2 h-5 w-5" />
                   Skills You Already Have
                 </h4>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2  print:flex-col print:gap-1">
                   {skillGapData.existing_skills?.map((skill, index) => (
                     <Badge key={index} variant="default" className="bg-green-100 text-green-800">
                       {skill}
@@ -243,22 +254,23 @@ export default function RoadmapGenerator() {
                   <div>
                     <h4 className="font-semibold text-blue-700 mb-3">Learning Priorities</h4>
                     <div className="space-y-3">
-                      {skillGapData.skill_priorities.map((item, index) => (
-                        <div key={index} className="flex items-start space-x-3 ">
-                          <div className="">
+                      {skillGapData.skill_priorities.map((item, index) => (<div key={index}>
+                        <div className="flex space-x-3 items-center">
+                          <div className=" ">
                             <Badge
                               variant={item.priority === 'High' ? 'destructive' :
                                 item.priority === 'Medium' ? 'default' : 'secondary'}
-                              className="mt-1 "
+                              className="mt-1 text-xs "
                             >
                               {item.priority}
                             </Badge>
                           </div>
                           <div>
-                            <p className="font-medium">{item.skill}</p>
-                            <p className="text-sm text-gray-600">{item.description}</p>
+                            <p className="font-medium text-sm">{item.skill}</p>
                           </div>
                         </div>
+                        < p className="text-xs text-gray-600 m-2 ">{item.description}</p >
+                      </div>
                       ))}
                     </div>
                   </div>
@@ -287,43 +299,71 @@ export default function RoadmapGenerator() {
                   A {roadmapData.roadmap?.duration} plan to achieve your career goals
                 </CardDescription>
               </CardHeader>
+
               <CardContent className="space-y-6">
                 {roadmapData.roadmap?.phases?.map((phase, index) => (
                   <div key={index} className="border-l-4 border-blue-500 pl-6 pb-6">
-                    <div className="flex items-center space-x-2 mb-3">
-                      <Badge variant="outline" className="text-blue-600">
-                        {phase.phase}
-                      </Badge>
-                      <Clock className="h-4 w-4 text-gray-500" />
-                      <span className="text-sm text-gray-600">{phase.duration}</span>
+                    {/* Header Row */}
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center space-x-2">
+                        <Badge variant="outline" className="text-blue-600">
+                          {phase.phase}
+                        </Badge>
+                        <Clock className="h-4 w-4 text-gray-500" />
+                        <span className="text-xs text-gray-600">{phase.duration}</span>
+                      </div>
+
+                      {/* Toggle button */}
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => togglePhase(index)}
+                      >
+                        {expandedPhase === index ? (
+                          <ChevronUp className="h-4 w-4 text-gray-500" />
+                        ) : (
+                          <ChevronDown className="h-4 w-4 text-gray-500" />
+                        )}
+                      </Button>
                     </div>
+
                     <h4 className="font-semibold text-gray-900 mb-2">{phase.title}</h4>
-                    <div className="space-y-3">
-                      {phase.tasks?.map((task, taskIndex) => (
-                        <div key={taskIndex} className="bg-gray-50 p-4 rounded-lg">
-                          <div className="flex items-start justify-between">
-                            <div className="flex-1">
-                              <p className="font-medium text-gray-900">{task.task}</p>
-                              <p className="text-sm text-gray-600 mt-1">
-                                Estimated time: {task.estimated_time}
-                              </p>
-                            </div>
-                          </div>
-                          {task.resources && (
-                            <div className="mt-3">
-                              <p className="text-sm font-medium text-gray-700 mb-1">Resources:</p>
-                              <div className="flex flex-wrap gap-1">
-                                {task.resources.map((resource, resourceIndex) => (
-                                  <Badge key={resourceIndex} variant="secondary" className="text-xs">
-                                    {resource}
-                                  </Badge>
-                                ))}
+
+                    {/* Expanded content */}
+                    {(expandedPhase === index || expandedPhase === 'all') && (
+                      <div className="space-y-3">
+                        {phase.tasks?.map((task, taskIndex) => (
+                          <div key={taskIndex} className="bg-gray-50 p-4 rounded-lg">
+                            <div className="flex items-start justify-between">
+                              <div className="flex-1">
+                                <p className="font-medium text-gray-900">{task.task}</p>
+                                <p className="text-sm text-gray-600 mt-1">
+                                  Estimated time: {task.estimated_time}
+                                </p>
                               </div>
                             </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
+                            {task.resources && (
+                              <div className="mt-3">
+                                <p className="text-sm font-medium text-gray-700 mb-1">
+                                  Resources:
+                                </p>
+                                <div className="flex flex-wrap gap-1">
+                                  {task.resources.map((resource, resourceIndex) => (
+                                    <Badge
+                                      key={resourceIndex}
+                                      variant="secondary"
+                                      className="text-xs"
+                                    >
+                                      {resource}
+                                    </Badge>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 ))}
 
@@ -331,7 +371,9 @@ export default function RoadmapGenerator() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-3">Recommended Tools</h4>
+                    <h4 className="font-semibold text-gray-900 mb-3">
+                      Recommended Tools
+                    </h4>
                     <div className="flex flex-wrap gap-2">
                       {roadmapData.roadmap?.recommended_tools?.map((tool, index) => (
                         <Badge key={index} variant="outline">
@@ -341,12 +383,16 @@ export default function RoadmapGenerator() {
                     </div>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-3">Practice Projects</h4>
+                    <h4 className="font-semibold text-gray-900 mb-3">
+                      Practice Projects
+                    </h4>
                     <div className="flex flex-wrap gap-2">
                       {roadmapData.roadmap?.practice_projects?.map((project, index) => (
-                        <Badge key={index} variant="outline">
+                        <div key={index}>
+                        <Badge  variant="outline">
                           {project}
                         </Badge>
+                        </div>
                       ))}
                     </div>
                   </div>
@@ -356,6 +402,6 @@ export default function RoadmapGenerator() {
           ) : null}
         </div>
       </div>
-    </div>
+    </div >
   );
 }
