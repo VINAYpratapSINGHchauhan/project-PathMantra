@@ -26,11 +26,16 @@ export default function RoadmapGenerator() {
   useEffect(() => {
     const skillGap = localStorage.getItem('skillGapData');
     const career = localStorage.getItem('selectedCareer');
+    const savedRoadmap = localStorage.getItem('roadmapData');
 
     if (skillGap && career) {
       setSkillGapData(JSON.parse(skillGap));
       setSelectedCareer(JSON.parse(career));
-      generateRoadmap(JSON.parse(skillGap), JSON.parse(career));
+      if (savedRoadmap) {
+        setRoadmapData(JSON.parse(savedRoadmap));
+      } else {
+        generateRoadmap(JSON.parse(skillGap), JSON.parse(career));
+      }
     } else {
       router.push('/quiz');
     }
@@ -55,6 +60,7 @@ export default function RoadmapGenerator() {
       if (response.ok) {
         const data = await response.json();
         setRoadmapData(data);
+        localStorage.setItem('roadmapData', JSON.stringify(data));
       }
     } catch (error) {
       console.error('Error generating roadmap:', error);
@@ -389,9 +395,9 @@ export default function RoadmapGenerator() {
                     <div className="flex flex-wrap gap-2">
                       {roadmapData.roadmap?.practice_projects?.map((project, index) => (
                         <div key={index}>
-                        <Badge  variant="outline">
-                          {project}
-                        </Badge>
+                          <Badge variant="outline">
+                            {project}
+                          </Badge>
                         </div>
                       ))}
                     </div>
