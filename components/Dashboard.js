@@ -76,8 +76,8 @@ export default function Dashboard() {
   const handleDeleteAccount = async () => {
     const auth = getAuth();
     const user = auth.currentUser;
-     const provider = new GoogleAuthProvider();
-      await reauthenticateWithPopup(user, provider);
+    const provider = new GoogleAuthProvider();
+    await reauthenticateWithPopup(user, provider);
 
     try {
       await deleteDoc(doc(db, "users", user.uid));
@@ -96,8 +96,8 @@ export default function Dashboard() {
     <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 ">
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-            Welcome back, {user.displayName}!
+          <h1 className="text-3xl md:text-4xl  text-gray-900 mb-2">
+            Welcome back, <p className='font-bold'>{user.displayName}!</p>
           </h1>
           <p className="text-lg text-gray-600">
             Track your career journey and manage your personalized recommendations
@@ -177,23 +177,25 @@ export default function Dashboard() {
               <CardContent>
                 <div className="space-y-4">
                   {savedCareers.length > 0 ? savedCareers.map((career) => (
-                    <div key={career.title} className="flex items-center justify-between p-4 border rounded-lg">
+                    <div key={career.title} className="flex md:flex-row items-start flex-col gap-2 justify-between p-4 border rounded-lg ">
                       <div className="flex-1">
-                        <div className="flex items-center space-x-4">
+                        <div className="flex items-center md:space-x-4 space-x-1">
                           <div>
-                            <h3 className="font-semibold text-gray-900">{career.title}</h3>
-
+                            <h3 className="font-semibold text-gray-900 md:text-base text-sm ">{career.title}</h3>
                           </div>
-                          <Badge variant="secondary">
+                          <Badge variant="secondary"  className='md:text-sm text-xs'>
                             {career.match_percentage}% Match
                           </Badge>
-                          <span className="text-sm text-green-600 font-medium">
+                          <span className="text-sm text-green-600 font-medium hidden md:block" >
                             {career.salary_range}
                           </span>
                         </div>
                       </div>
+                      <span className="text-sm text-green-600 font-medium md:hidden " >
+                        {career.salary_range}
+                      </span>
                       <div className="flex items-center space-x-2">
-                        <Button size="sm" variant="outline" className='bg-blue-500 text-white'>
+                        <Button size="sm" variant="outline" className='bg-blue-500 text-white hover:bg-blue-700 hover:text-white'>
                           <Eye className="h-4 w-4 mr-2" />
                           View
                         </Button>
@@ -233,10 +235,10 @@ export default function Dashboard() {
               <CardContent className="space-y-6">
                 <div className="flex items-center space-x-4">
                   <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center">
-                    <User className="h-10 w-10 text-blue-600" />
+                    <img src={user.photoURL || '/default-profile.png'} alt="Profile" className="w-16 h-16 rounded-full object-cover" />
                   </div>
-                  <div>
-                    <h3 className="text-lg font-semibold">{user.displayName}</h3>
+                  <div className="hidden md:block">
+                    <h3 className="md:text-lg  text-sm font-semibold">{user.displayName}</h3>
                     <p className="text-gray-600">{user.email}</p>
                   </div>
                 </div>
@@ -273,9 +275,9 @@ export default function Dashboard() {
                 </div>
 
                 <div className="pt-4 border-t">
-                  <Button variant="outline" className="mr-4">
+                  {/* <Button variant="outline" className="mr-4">
                     Update Profile /
-                  </Button>
+                  </Button> */}
                   <Button variant="destructive" onClick={handleDeleteAccount}>
                     Delete Account
                   </Button>
