@@ -100,7 +100,7 @@ export default function Header() {
                 {user ? (
                   <div className="flex flex-col space-y-5">
                     <div className="flex items-center space-x-2">
-                      <Link href="/dashboard" className="text-black font-semibold ">
+                      <Link href="/dashboard" className="text-black font-semibold flex items-center space-x-2">
                         <User className="h-5 w-5 text-black " />
                         <span className="text-sm text-black font-semibold ">{user.displayName}</span>
                       </Link>
