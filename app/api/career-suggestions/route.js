@@ -3,68 +3,85 @@ import axios from 'axios';
 
 export const dynamic = 'force-dynamic';
 
+function cleanAIResponse(text) {
+  return text
+    .replace(/```json|```js|```/gi, '')    // remove code block markers
+    .replace(/<s>|<\/s>/gi, '')             // remove <s> tokens from models like Mistral
+    .replace(/^[^{\[]*/, '')                // trim everything before first { or [
+    .replace(/[^}\]]*$/, '')                // trim everything after last } or ]
+    .trim();
+}
+
 export async function POST(request) {
   try {
     const { skills, interests, education, workStyle, experience } = await request.json();
 
     const prompt = `
-      Based on the following user profile, suggest the top 5 most suitable career paths:
+Based on the following user profile, suggest the top 5 most suitable career paths:
 
-      Skills: ${skills}
-      Interests: ${interests}
-      Education Level: ${education}
-      Work Style Preferences: ${workStyle}
-      Experience Level: ${experience}
+Skills: ${skills}
+Interests: ${interests}
+Education Level: ${education}
+Work Style Preferences: ${workStyle}
+Experience Level: ${experience}
 
-      Please provide your response in the following JSON format:
-      {
-        "careers": [
-          {
-            "title": "Career Title",
-            "description": "Brief description of the role",
-            "match_percentage": 85,
-            "required_skills": ["skill1", "skill2", "skill3"],
-            "salary_range": "₹50,000 - ₹80,000",
-            "growth_potential": "High"
-          }
-        ]
-      }
+Respond ONLY with valid JSON in this structure:
+
+{
+  "careers": [
+    {
+      "title": "Career Title",
+      "description": "Short role description",
+      "match_percentage": 85,
+      "required_skills": ["skill1", "skill2"],
+      "salary_range": "₹50,000 - ₹80,000",
+      "growth_potential": "High"
+    }
+  ]
+}
     `;
 
     const completion = await axios.post(
-      'https://openrouter.ai/api/v1/chat/completions',
+      "https://openrouter.ai/api/v1/chat/completions",
       {
-        model: 'mistralai/mistral-7b-instruct',
+        model: "mistralai/mistral-7b-instruct",
         messages: [
-          {
-            role: 'system',
-            content:
-              'You are a career advisor AI that provides personalized career recommendations based on user profiles. Always respond with valid JSON.',
-          },
-          {
-            role: 'user',
-            content: prompt,
-          },
+          { role: "system", content: "You are a JSON-only career advisor. NEVER include commentary, markdown, or code blocks." },
+          { role: "user", content: prompt },
         ],
-        temperature: 0.7,
-        max_tokens: 2000,
+        temperature: 0.4,
+        max_tokens: 1500,
       },
       {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
         },
       }
     );
 
-    const content = completion.data.choices[0].message.content;
-    const response = JSON.parse(content);
+    let aiResponse = completion.data.choices[0].message.content;
 
-    return NextResponse.json(response);
+    aiResponse = cleanAIResponse(aiResponse);
+
+    let jsonParsed;
+
+    try {
+      jsonParsed = JSON.parse(aiResponse);
+    } catch (err) {
+      console.error("Invalid JSON received:", aiResponse);
+      return NextResponse.json({ 
+        error: "Invalid JSON received from AI", 
+        raw: aiResponse 
+      }, { status: 500 });
+    }
+
+    return NextResponse.json(jsonParsed);
+
   } catch (error) {
-    console.error('Error generating career suggestions:', error?.response?.data || error.message);
+    console.error("Error generating career suggestions:", error?.response?.data || error.message);
     return NextResponse.json(
-      { error: 'Failed to generate career suggestions' },
+      { error: "Failed to generate career suggestions" },
       { status: 500 }
     );
   }

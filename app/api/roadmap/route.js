@@ -2,6 +2,15 @@ import { NextResponse } from 'next/server';
 import axios from 'axios';
 export const dynamic = 'force-dynamic';
 
+// Added cleaner to remove unwanted characters
+function cleanAIResponse(text) {
+  return text
+    .replace(/```json|```js|```/gi, '')
+    .replace(/<s>|<\/s>/gi, '')
+    .replace(/^[^{\[]*/, '')
+    .replace(/[^}\]]*$/, '')
+    .trim();
+}
 
 export async function POST(request) {
   try {
@@ -61,12 +70,27 @@ export async function POST(request) {
         },
       }
     );
-   const content = completion.data.choices[0].message.content;
-    const response = JSON.parse(content);
+
+    let content = completion.data.choices[0].message.content;
+
+    // Clean + safe parse
+    content = cleanAIResponse(content);
+
+    let response;
+    try {
+      response = JSON.parse(content);
+    } catch (err) {
+      console.error("Invalid JSON from AI:", content);
+      return NextResponse.json(
+        { error: "Invalid JSON received from AI", raw: content },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json(response);
+
   } catch (error) {
-    console.error('Error generating roadmap:', error?.response?.data||error.message);
+    console.error('Error generating roadmap:', error?.response?.data || error.message);
     return NextResponse.json(
       { error: 'Failed to generate roadmap' },
       { status: 500 }
