@@ -89,6 +89,18 @@ export default function Dashboard() {
       console.log(error);
     }
   };
+ const handleViewRoadmap = (career) => {
+  // Clear previous data to avoid reuse of old career roadmap
+  localStorage.removeItem("selectedCareer");
+
+  // Ensure the clicked career is the one being sent
+  const roadmapPayload = JSON.parse(JSON.stringify(career));
+
+  localStorage.setItem("selectedCareer", JSON.stringify(roadmapPayload));
+
+  router.push("/roadmap");
+};
+
 
   if (!user) return null;
 
@@ -183,7 +195,7 @@ export default function Dashboard() {
                           <div>
                             <h3 className="font-semibold text-gray-900 md:text-base text-sm ">{career.title}</h3>
                           </div>
-                          <Badge variant="secondary"  className='md:text-sm text-xs'>
+                          <Badge variant="secondary" className='md:text-sm text-xs'>
                             {career.match_percentage}% Match
                           </Badge>
                           <span className="text-sm text-green-600 font-medium hidden md:block" >
@@ -195,10 +207,10 @@ export default function Dashboard() {
                         {career.salary_range}
                       </span>
                       <div className="flex items-center space-x-2">
-                        <Button size="sm" variant="outline" className='bg-blue-500 text-white hover:bg-blue-700 hover:text-white'>
+                        {/* <Button size="sm" variant="outline" className='bg-blue-500 text-white hover:bg-blue-700 hover:text-white' onClick={() => handleViewRoadmap(career)}>
                           <Eye className="h-4 w-4 mr-2" />
                           View
-                        </Button>
+                        </Button> */}
                         {/* <Button size="sm" variant="outline" className=' bg-green-500 text-white' onClick={handleDownloadPDF}>
                           <Download className="h-4 w-4 mr-2" />
                           Download
@@ -242,38 +254,6 @@ export default function Dashboard() {
                     <p className="text-gray-600">{user.email}</p>
                   </div>
                 </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Full Name
-                    </label>
-                    <p className="text-gray-900">{user.displayName}</p>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Email
-                    </label>
-                    <p className="text-gray-900">{user.email}</p>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Member Since
-                    </label>
-                    <p className="text-gray-900">
-                      {new Date(user.metadata?.creationTime).toLocaleDateString()}
-                    </p>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Last Sign In
-                    </label>
-                    <p className="text-gray-900">
-                      {new Date(user.metadata?.lastSignInTime).toLocaleDateString()}
-                    </p>
-                  </div>
-                </div>
-
                 <div className="pt-4 border-t">
                   {/* <Button variant="outline" className="mr-4">
                     Update Profile /

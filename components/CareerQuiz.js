@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/lib/auth-context';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -12,12 +11,14 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Mic, MicOff } from 'lucide-react';
 
 export default function CareerQuiz() {
-  const { user } = useAuth();
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
+
   const [isListening, setIsListening] = useState(false);
+  const [activeField, setActiveField] = useState(null); 
   const [recognition, setRecognition] = useState(null);
+
   const [formData, setFormData] = useState({
     skills: '',
     interests: '',
@@ -26,12 +27,6 @@ export default function CareerQuiz() {
     workStyle: [],
     careerGoals: ''
   });
-
-  useEffect(() => {
-    if (!user) {
-      router.push('/login');
-    }
-  }, [user, router]);
 
   useEffect(() => {
     if (typeof window !== 'undefined' && 'webkitSpeechRecognition' in window) {
@@ -62,17 +57,19 @@ export default function CareerQuiz() {
 
   const startVoiceInput = (field) => {
     if (!recognition) return;
-    
+
+    setActiveField(field); 
     setIsListening(true);
     recognition.start();
-    
+
     recognition.onresult = (event) => {
       const transcript = event.results[event.results.length - 1][0].transcript;
       handleInputChange(field, transcript);
     };
-    
+
     recognition.onend = () => {
       setIsListening(false);
+      setActiveField(null); 
     };
   };
 
@@ -80,12 +77,13 @@ export default function CareerQuiz() {
     if (recognition) {
       recognition.stop();
       setIsListening(false);
+      setActiveField(null); 
     }
   };
 
   const handleSubmit = async () => {
     setLoading(true);
-    
+
     try {
       const response = await fetch('/api/career-suggestions', {
         method: 'POST',
@@ -140,8 +138,6 @@ export default function CareerQuiz() {
     '10+ years'
   ];
 
-  if (!user) return null;
-
   return (
     <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto">
@@ -155,11 +151,15 @@ export default function CareerQuiz() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
+
+            {/* STEP 1 */}
             {step === 1 && (
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold">Skills & Expertise</h3>
+
+                {/* SKILLS */}
                 <div className="space-y-2">
-                  <Label htmlFor="skills">What are your current skills? (e.g., Python, Communication, Leadership)</Label>
+                  <Label htmlFor="skills">What are your current skills?</Label>
                   <div className="relative">
                     <Input
                       id="skills"
@@ -168,17 +168,24 @@ export default function CareerQuiz() {
                       placeholder="List your skills separated by commas"
                       className="pr-12"
                     />
+
                     <Button
                       type="button"
                       variant="ghost"
                       size="sm"
                       className="absolute right-2 top-1/2 transform -translate-y-1/2"
-                      onClick={() => isListening ? stopVoiceInput() : startVoiceInput('skills')}
+                      onClick={() =>
+                        activeField === 'skills'
+                          ? stopVoiceInput()
+                          : startVoiceInput('skills')
+                      }
                     >
-                      {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                      {activeField === 'skills' ? <Mic className="h-4 w-4" /> : <MicOff className="h-4 w-4" />}
                     </Button>
                   </div>
                 </div>
+
+                {/* INTERESTS */}
                 <div className="space-y-2">
                   <Label htmlFor="interests">What are your interests and passions?</Label>
                   <div className="relative">
@@ -189,25 +196,31 @@ export default function CareerQuiz() {
                       placeholder="Describe what you enjoy doing"
                       className="pr-12"
                     />
+
                     <Button
                       type="button"
                       variant="ghost"
                       size="sm"
                       className="absolute right-2 top-1/2 transform -translate-y-1/2"
-                      onClick={() => isListening ? stopVoiceInput() : startVoiceInput('interests')}
+                      onClick={() =>
+                        activeField === 'interests'
+                          ? stopVoiceInput()
+                          : startVoiceInput('interests')
+                      }
                     >
-                      {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                      {activeField === 'interests' ? <Mic className="h-4 w-4" /> : <MicOff className="h-4 w-4" />}
                     </Button>
                   </div>
                 </div>
               </div>
             )}
 
+            {/* STEP 2 */}
             {step === 2 && (
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold">Education & Experience</h3>
                 <div className="space-y-2">
-                  <Label>What&apos;s your highest level of education?</Label>
+                  <Label>What's your highest level of education?</Label>
                   <Select value={formData.education} onValueChange={(value) => handleInputChange('education', value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select your education level" />
@@ -219,6 +232,7 @@ export default function CareerQuiz() {
                     </SelectContent>
                   </Select>
                 </div>
+
                 <div className="space-y-2">
                   <Label>How much work experience do you have?</Label>
                   <Select value={formData.experience} onValueChange={(value) => handleInputChange('experience', value)}>
@@ -235,6 +249,7 @@ export default function CareerQuiz() {
               </div>
             )}
 
+            {/* STEP 3 */}
             {step === 3 && (
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold">Work Style Preferences</h3>
@@ -254,6 +269,7 @@ export default function CareerQuiz() {
               </div>
             )}
 
+            {/* STEP 4 */}
             {step === 4 && (
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold">Career Goals</h3>
@@ -267,18 +283,23 @@ export default function CareerQuiz() {
                       placeholder="Describe your career aspirations"
                       className="pr-12"
                     />
+
                     <Button
                       type="button"
                       variant="ghost"
                       size="sm"
                       className="absolute right-2 top-1/2 transform -translate-y-1/2"
-                      onClick={() => isListening ? stopVoiceInput() : startVoiceInput('careerGoals')}
+                      onClick={() =>
+                        activeField === 'careerGoals'
+                          ? stopVoiceInput()
+                          : startVoiceInput('careerGoals')
+                      }
                     >
-                      {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                      {activeField === 'careerGoals' ? <Mic className="h-4 w-4" /> : <MicOff className="h-4 w-4" />}
                     </Button>
                   </div>
                 </div>
-                
+
                 <div className="bg-blue-50 p-4 rounded-lg">
                   <h4 className="font-semibold text-blue-900">Quiz Summary</h4>
                   <div className="mt-2 text-sm text-blue-800">
@@ -292,19 +313,21 @@ export default function CareerQuiz() {
               </div>
             )}
 
+            {/* NAVIGATION BUTTONS */}
             <div className="flex md:flex-row flex-col justify-between pt-6 gap-2">
               {step > 1 && (
                 <Button variant="outline" onClick={prevStep}>
                   Previous
                 </Button>
               )}
+
               {step < 4 ? (
                 <Button onClick={nextStep} className="ml-auto w-full">
                   Next
                 </Button>
               ) : (
-                <Button 
-                  onClick={handleSubmit} 
+                <Button
+                  onClick={handleSubmit}
                   disabled={loading}
                   className="ml-auto bg-blue-600 hover:bg-blue-700 w-full"
                 >
@@ -312,6 +335,7 @@ export default function CareerQuiz() {
                 </Button>
               )}
             </div>
+
           </CardContent>
         </Card>
       </div>

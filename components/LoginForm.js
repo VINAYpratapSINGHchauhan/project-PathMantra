@@ -25,6 +25,7 @@ export default function LoginForm() {
       const userRef = doc(db, 'users', user.uid);
       const docSnap = await getDoc(userRef);
 
+      // Create new user if not exists
       if (!docSnap.exists()) {
         await setDoc(userRef, {
           uid: user.uid,
@@ -38,7 +39,13 @@ export default function LoginForm() {
       } else {
         toast.success("Welcome back!");
       }
-      router.push('/quiz');
+      const searchParams = new URLSearchParams(window.location.search);
+      const redirect = searchParams.get("redirect"); 
+      if (redirect) {
+        router.push(`/${redirect}`);
+      } else {
+        router.push('/quiz'); // default redirect
+      }
     } catch (error) {
       toast.error(`Error signing in: ${error.message}`);
     } finally {

@@ -13,11 +13,7 @@ export default function LandingPage() {
   const router = useRouter();
 
   const handleGetStarted = () => {
-    if (user) {
       router.push('/quiz');
-    } else {
-      router.push('/login');
-    }
   };
 
   const features = [
@@ -45,22 +41,22 @@ export default function LandingPage() {
 
   const testimonials = [
     {
-      name: "Sarah Johnson",
+      name: "Sara Gupta",
       role: "Software Developer",
       content: "PathMantra helped me transition from marketing to tech. The roadmap was incredibly detailed!"
     },
     {
-      name: "Mike Chen",
+      name: "Nikhil Patel",
       role: "Data Scientist",
       content: "The skill gap analysis was spot-on. I knew exactly what to focus on learning."
     },
     {
-      name: "Emily Rodriguez",
+      name: "Rohan Singh",
       role: "UX Designer",
       content: "Finally found my perfect career path. The AI recommendations were amazingly accurate."
     }
   ];
-  
+
   return (
     <main className="flex-1">
       {/* Hero Section */}
@@ -97,7 +93,7 @@ export default function LandingPage() {
               Discover the features that make PathMantra the ultimate career guidance platform
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
               <Card key={index} className="text-center p-6 hover:shadow-lg transition-shadow duration-200">
@@ -125,7 +121,7 @@ export default function LandingPage() {
               Simple steps to discover your ideal career path
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center border border-gray-500 rounded-xl p-7 shadow-md hover:shadow-xl">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-100 rounded-full mb-4">
@@ -134,7 +130,7 @@ export default function LandingPage() {
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Take the Quiz</h3>
               <p className="text-gray-600">Answer questions about your skills, interests, and career goals</p>
             </div>
-            
+
             <div className="text-center border border-gray-500 rounded-xl p-7 shadow-md hover:shadow-xl">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full mb-4">
                 <span className="text-2xl font-bold text-purple-600">2</span>
@@ -142,7 +138,7 @@ export default function LandingPage() {
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Get Recommendations</h3>
               <p className="text-gray-600">Receive AI-powered career suggestions with match percentages</p>
             </div>
-            
+
             <div className="text-center border border-gray-500 rounded-xl p-7 shadow-md hover:shadow-xl">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
                 <span className="text-2xl font-bold text-blue-600">3</span>
@@ -165,7 +161,7 @@ export default function LandingPage() {
               Real stories from people who found their perfect career path
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
               <Card key={index} className="p-6">

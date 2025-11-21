@@ -83,53 +83,67 @@ export default function RoadmapGenerator() {
 
 
 
-  const handleSaveRoadmap = async () => {
-    if (!user) return;
+ const handleSaveRoadmap = async () => {
+  if (!user) {
+    toast.info("Please login to save your roadmap!");
+    router.push(`/login?redirect=roadmap`);
+    return;
+  }
 
-    const userRef = doc(db, 'users', user.uid);
-    const presentUser = await getDoc(userRef);
+  const userRef = doc(db, "users", user.uid);
+  const userSnap = await getDoc(userRef);
 
-    if (presentUser.exists()) {
-      const data = presentUser.data();
-      const savedCareers = data.savedCareers || [];
-
-
-      const alreadyExists = savedCareers.some(
-        (career) => career.title === selectedCareer.title
-      );
-
-      if (alreadyExists) {
-        toast.info('Roadmap Already Exist!')
-        return;
-      }
-
-      const updatedCareers = [...savedCareers, selectedCareer];
-
-      await updateDoc(userRef, {
-        savedCareers: updatedCareers
-      });
-
-      toast.success(
-        <div>
-          <div>Roadmap Saved Successfuly ! </div>
-        </div>
-      )
-    } else {
-      await setDoc(userRef, {
-        name: user.displayName,
-        email: user.email,
-        photoURL: user.photoURL,
-        joinedAt: serverTimestamp(),
-        savedCareers: [selectedCareer]
-      });
-      toast.success(
-        <div>
-          <strong>Roadmap Saved Successfuly !</strong>
-          <div>check Dashborad for details. </div>
-        </div>
-      )
-    }
+  // Pack full roadmap object
+  const fullRoadmapObject = {
+    ...selectedCareer,
+    skillGapData: skillGapData,
+    roadmapData: roadmapData,
+    savedAt: new Date()
   };
+
+  if (userSnap.exists()) {
+    const data = userSnap.data();
+    const savedCareers = data.savedCareers || [];
+
+    const alreadyExists = savedCareers.some(
+      (career) => career.title === selectedCareer.title
+    );
+
+    if (alreadyExists) {
+      toast.info("Roadmap Already Exists!");
+      return;
+    }
+
+    const updatedCareers = [...savedCareers, fullRoadmapObject];
+
+    await updateDoc(userRef, {
+      savedCareers: updatedCareers
+    });
+
+    toast.success(
+      <div>
+        <div>Roadmap Saved Successfully!</div>
+      </div>
+    );
+  } else {
+    // If new user record
+    await setDoc(userRef, {
+      name: user.displayName,
+      email: user.email,
+      photoURL: user.photoURL,
+      joinedAt: serverTimestamp(),
+      savedCareers: [fullRoadmapObject]
+    });
+
+    toast.success(
+      <div>
+        <strong>Roadmap Saved Successfully!</strong>
+        <div>Check Dashboard for details.</div>
+      </div>
+    );
+  }
+};
+
   const [expandedPhase, setExpandedPhase] = useState(null);
 
   const togglePhase = (index) => {
