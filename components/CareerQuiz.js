@@ -16,8 +16,10 @@ export default function CareerQuiz() {
   const [loading, setLoading] = useState(false);
 
   const [isListening, setIsListening] = useState(false);
-  const [activeField, setActiveField] = useState(null); 
+  const [activeField, setActiveField] = useState(null);
   const [recognition, setRecognition] = useState(null);
+
+  const [errors, setErrors] = useState({});
 
   const [formData, setFormData] = useState({
     skills: '',
@@ -44,21 +46,26 @@ export default function CareerQuiz() {
       ...prev,
       [field]: value
     }));
+    setErrors(prev => ({ ...prev, [field]: '' }));
   };
 
   const handleWorkStyleChange = (style, checked) => {
+    const updated = checked
+      ? [...formData.workStyle, style]
+      : formData.workStyle.filter(s => s !== style);
+
     setFormData(prev => ({
       ...prev,
-      workStyle: checked
-        ? [...prev.workStyle, style]
-        : prev.workStyle.filter(s => s !== style)
+      workStyle: updated
     }));
+
+    setErrors(prev => ({ ...prev, workStyle: '' }));
   };
 
   const startVoiceInput = (field) => {
     if (!recognition) return;
 
-    setActiveField(field); 
+    setActiveField(field);
     setIsListening(true);
     recognition.start();
 
@@ -69,7 +76,7 @@ export default function CareerQuiz() {
 
     recognition.onend = () => {
       setIsListening(false);
-      setActiveField(null); 
+      setActiveField(null);
     };
   };
 
@@ -77,11 +84,49 @@ export default function CareerQuiz() {
     if (recognition) {
       recognition.stop();
       setIsListening(false);
-      setActiveField(null); 
+      setActiveField(null);
     }
   };
 
+  // 🔥 VALIDATION FOR EACH STEP
+  const validateStep = () => {
+    let newErrors = {};
+
+    if (step === 1) {
+      if (!formData.skills.trim()) newErrors.skills = "Please enter your skills.";
+      if (!formData.interests.trim()) newErrors.interests = "Please enter your interests.";
+    }
+
+    if (step === 2) {
+      if (!formData.education) newErrors.education = "Please select your education.";
+      if (!formData.experience) newErrors.experience = "Please select your experience.";
+    }
+
+    if (step === 3) {
+      if (formData.workStyle.length === 0)
+        newErrors.workStyle = "Select at least one work style preference.";
+    }
+
+    if (step === 4) {
+      if (!formData.careerGoals.trim())
+        newErrors.careerGoals = "Please enter your career goals.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const nextStep = () => {
+    if (validateStep()) {
+      setStep(step + 1);
+    }
+  };
+
+  const prevStep = () => setStep(step - 1);
+
   const handleSubmit = async () => {
+    if (!validateStep()) return;
+
     setLoading(true);
 
     try {
@@ -105,9 +150,6 @@ export default function CareerQuiz() {
       setLoading(false);
     }
   };
-
-  const nextStep = () => setStep(step + 1);
-  const prevStep = () => setStep(step - 1);
 
   const workStyleOptions = [
     'Team collaboration',
@@ -143,11 +185,11 @@ export default function CareerQuiz() {
       <div className="max-w-2xl mx-auto">
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl  font-bold text-center mb-3">
+            <CardTitle className="text-2xl font-bold text-center mb-3">
               Career Quiz :
             </CardTitle>
             <CardDescription className="md:text-center text-left">
-              Step {step} of 4 - <br></br>Tell us about yourself to get personalized recommendations
+              Step {step} of 4 - <br />Tell us about yourself to get personalized recommendations
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -160,6 +202,7 @@ export default function CareerQuiz() {
                 {/* SKILLS */}
                 <div className="space-y-2">
                   <Label htmlFor="skills">What are your current skills?</Label>
+
                   <div className="relative">
                     <Input
                       id="skills"
@@ -173,7 +216,7 @@ export default function CareerQuiz() {
                       type="button"
                       variant="ghost"
                       size="sm"
-                      className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                      className="absolute right-2 top-1/2 -translate-y-1/2"
                       onClick={() =>
                         activeField === 'skills'
                           ? stopVoiceInput()
@@ -183,11 +226,14 @@ export default function CareerQuiz() {
                       {activeField === 'skills' ? <Mic className="h-4 w-4" /> : <MicOff className="h-4 w-4" />}
                     </Button>
                   </div>
+
+                  {errors.skills && <p className="text-red-500 text-sm">{errors.skills}</p>}
                 </div>
 
                 {/* INTERESTS */}
                 <div className="space-y-2">
                   <Label htmlFor="interests">What are your interests and passions?</Label>
+
                   <div className="relative">
                     <Input
                       id="interests"
@@ -201,7 +247,7 @@ export default function CareerQuiz() {
                       type="button"
                       variant="ghost"
                       size="sm"
-                      className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                      className="absolute right-2 top-1/2 -translate-y-1/2"
                       onClick={() =>
                         activeField === 'interests'
                           ? stopVoiceInput()
@@ -211,6 +257,8 @@ export default function CareerQuiz() {
                       {activeField === 'interests' ? <Mic className="h-4 w-4" /> : <MicOff className="h-4 w-4" />}
                     </Button>
                   </div>
+
+                  {errors.interests && <p className="text-red-500 text-sm">{errors.interests}</p>}
                 </div>
               </div>
             )}
@@ -219,32 +267,49 @@ export default function CareerQuiz() {
             {step === 2 && (
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold">Education & Experience</h3>
+
+                {/* EDUCATION */}
                 <div className="space-y-2">
                   <Label>What's your highest level of education?</Label>
-                  <Select value={formData.education} onValueChange={(value) => handleInputChange('education', value)}>
+
+                  <Select
+                    value={formData.education}
+                    onValueChange={(value) => handleInputChange('education', value)}
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="Select your education level" />
                     </SelectTrigger>
+
                     <SelectContent>
                       {educationOptions.map(option => (
                         <SelectItem key={option} value={option}>{option}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
+
+                  {errors.education && <p className="text-red-500 text-sm">{errors.education}</p>}
                 </div>
 
+                {/* EXPERIENCE */}
                 <div className="space-y-2">
                   <Label>How much work experience do you have?</Label>
-                  <Select value={formData.experience} onValueChange={(value) => handleInputChange('experience', value)}>
+
+                  <Select
+                    value={formData.experience}
+                    onValueChange={(value) => handleInputChange('experience', value)}
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="Select your experience level" />
                     </SelectTrigger>
+
                     <SelectContent>
                       {experienceOptions.map(option => (
                         <SelectItem key={option} value={option}>{option}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
+
+                  {errors.experience && <p className="text-red-500 text-sm">{errors.experience}</p>}
                 </div>
               </div>
             )}
@@ -253,7 +318,8 @@ export default function CareerQuiz() {
             {step === 3 && (
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold">Work Style Preferences</h3>
-                <p className="text-sm text-gray-600">Select all that apply to you:</p>
+                <p className="text-sm text-gray-600">Select all that apply:</p>
+
                 <div className="grid grid-cols-2 gap-3">
                   {workStyleOptions.map(style => (
                     <div key={style} className="flex items-center space-x-2">
@@ -266,6 +332,8 @@ export default function CareerQuiz() {
                     </div>
                   ))}
                 </div>
+
+                {errors.workStyle && <p className="text-red-500 text-sm">{errors.workStyle}</p>}
               </div>
             )}
 
@@ -273,8 +341,10 @@ export default function CareerQuiz() {
             {step === 4 && (
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold">Career Goals</h3>
+
                 <div className="space-y-2">
                   <Label htmlFor="careerGoals">What are your long-term career goals?</Label>
+
                   <div className="relative">
                     <Input
                       id="careerGoals"
@@ -288,7 +358,7 @@ export default function CareerQuiz() {
                       type="button"
                       variant="ghost"
                       size="sm"
-                      className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                      className="absolute right-2 top-1/2 -translate-y-1/2"
                       onClick={() =>
                         activeField === 'careerGoals'
                           ? stopVoiceInput()
@@ -298,6 +368,8 @@ export default function CareerQuiz() {
                       {activeField === 'careerGoals' ? <Mic className="h-4 w-4" /> : <MicOff className="h-4 w-4" />}
                     </Button>
                   </div>
+
+                  {errors.careerGoals && <p className="text-red-500 text-sm">{errors.careerGoals}</p>}
                 </div>
 
                 <div className="bg-blue-50 p-4 rounded-lg">
@@ -313,7 +385,7 @@ export default function CareerQuiz() {
               </div>
             )}
 
-            {/* NAVIGATION BUTTONS */}
+            {/* 🔥 NAVIGATION BUTTONS */}
             <div className="flex md:flex-row flex-col justify-between pt-6 gap-2">
               {step > 1 && (
                 <Button variant="outline" onClick={prevStep}>

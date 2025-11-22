@@ -172,7 +172,7 @@ export default function Dashboard() {
                   onClick={() => router.push('/recommendations')}
                   variant="outline"
                 >
-                  View Recommendations
+                  View Previous Recommendations
                 </Button>
               </CardContent>
             </Card>
