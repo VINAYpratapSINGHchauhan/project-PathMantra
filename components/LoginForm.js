@@ -74,15 +74,6 @@ export default function LoginForm() {
             <Chrome className="mr-2 h-5 w-5" />
             {loading ? 'Signing in...' : 'Sign in with Google'}
           </Button>
-
-          <div className="text-center text-sm text-gray-600">
-            <p>
-              By signing in, you agree to our{' '}
-              <a href="#" className="text-blue-600 hover:underline">Terms of Service</a>{' '}
-              and{' '}
-              <a href="#" className="text-blue-600 hover:underline">Privacy Policy</a>
-            </p>
-          </div>
         </CardContent>
       </Card>
     </div>
