@@ -109,15 +109,15 @@ export default function ContactPage() {
                     <div>
                         <h2 className="text-xl font-semibold mb-2">📞 Reach Us</h2>
                         <div className="pl-6 text-sm mt-5">
-                            <p className="text-gray-500">Email: <a href="mailto:binnu4321vinay@gmail.com" className="text-gray-700">binnu4321vinay@gmail.com</a></p>
+                            <p className="text-gray-500">Email: <a href="mailto:vinaypratapsinghchauhan001@gmail.com" className="text-gray-700">vinaypratapsinghchauhan001@gmail.com</a></p>
                             <p className="text-gray-500">Phone: <a href="tel:+919958234205" className="text-gray-700">+91 99582 34205</a></p>
                         </div>
                     </div>
 
                     <div>
-                        <h2 className="text-xl font-semibold mb-2">🏢 Office</h2>
+                        <h2 className="text-xl font-semibold mb-2">🏢 Work</h2>
                         <div className=" pl-6 text-sm mt-5">
-                            <p className="text-gray-500">vikas kunj, Uttam nagar east</p>
+                            <p className="text-gray-500">Uttam nagar east</p>
                             <p className="text-gray-500">Delhi, India – 110059</p>
                         </div>
                     </div>
